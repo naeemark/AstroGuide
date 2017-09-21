@@ -1,7 +1,6 @@
 # Astro Guide #
 
 Demonstration of Requirements understanding, proposing a solution and implementation by using latest tools and techniques. The code is based on Google Android SDK.
-Developed as an assignment for Astro.
 
 ### What is this repository for? ###
 
@@ -42,13 +41,12 @@ Please sync and resolve dependencies
 - [Glide](https://github.com/bumptech/glide)
 - Functional tests with [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/index.html)
 - [Mockito](http://mockito.org/)
-- [Checkstyle](http://checkstyle.sourceforge.net/), [PMD](https://pmd.github.io/) and [Findbugs](http://findbugs.sourceforge.net/) for code analysis
 
 
 ## Storage ##
 ### Local Storage ###
 
-- [`SharedPreferences`](https://developer.android.com/reference/android/content/SharedPreferences.html) are used for session storage
+- [`SharedPreferences`](https://developer.android.com/reference/android/content/SharedPreferences.html) are used for local persistance of preferences
 
 ### Remote Storage ###
 #### SSO Auth ####
@@ -71,7 +69,7 @@ Used `Android Lint` and `SonarLint`
 The project can be distributed using [Google Play Store](https://github.com/Triple-T/gradle-play-publisher).
 
 
-### Contribution guidelines ###
+## Contribution guidelines ##
 
 - forks are always appreciated
 
