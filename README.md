@@ -16,12 +16,10 @@ _to be provided later_
 
 ## How do I get set up? ##
 
-###How to set up ###
-
+### How to set up ###
 To setup you need to clone this repo, from `master` or `develop` branch or some latest `TAG`
 
-### Configuration###
-
+### Configuration ###
 Please sync and resolve dependencies
 
 
