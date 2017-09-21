@@ -17,11 +17,15 @@ _to be provided later_
 ## How do I get set up? ##
 
 ###How to set up ###
+
 To setup you need to clone this repo, from `master` or `develop` branch or some latest `TAG`
+
 ### Configuration###
+
 Please sync and resolve dependencies
 
-## Requirements
+
+## Requirements ##
 
 - JDK 1.8
 - [Android SDK](http://developer.android.com/sdk/index.html).
@@ -29,7 +33,7 @@ Please sync and resolve dependencies
 - Latest Android SDK Tools and build tools.
 
 
-## Libraries and tools included:
+## Libraries and tools included: ##
 
 - Support libraries
 - RecyclerViews and CardViews
@@ -55,16 +59,16 @@ Please sync and resolve dependencies
 - Using `AWS-EC2` instance with `Flask` app deployed to persist settings agaings a logged-in user. 
 
 
-## External Tools:
+## External Tools: ##
 
 - API-response DTOs are created by using [JSON2Schema](http://www.jsonschema2pojo.org/)
 
 
-## Code Quality
+## Code Quality ##
 
 Used `Android Lint` and `SonarLint`
 
-## Distribution
+## Distribution ##
 
 The project can be distributed using [Google Play Store](https://github.com/Triple-T/gradle-play-publisher).
 
