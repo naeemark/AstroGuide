@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Astro Guide</string>
+
+    <!--Prompts-->
+    <string name="loading_resources">Loading Resources&#8230;</string>
+
+    <!--Errors-->
+    <string name="error_no_network">No Network Available!</string>
+
 </resources>

@@ -7,4 +7,9 @@ package com.astro.guide.app.view;
  */
 
 public interface BaseView {
+    void showProgress(String message);
+
+    void hideProgress();
+
+    void showErrorWithMessage(String errorText);
 }
