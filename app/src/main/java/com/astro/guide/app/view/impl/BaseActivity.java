@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.astro.guide.R;
 import com.astro.guide.app.AstroGuideApp;
 import com.astro.guide.app.injection.AppComponent;
 import com.astro.guide.app.presenter.BasePresenter;
@@ -141,7 +142,12 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
     protected abstract int getContentView();
 
     @Override
-    public void showProgress(String message) {
+    public void showLoading() {
+        this.showLoading(getString(R.string.loading));
+    }
+
+    @Override
+    public void showLoading(String message) {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -152,7 +158,7 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
     }
 
     @Override
-    public void hideProgress() {
+    public void hideLoading() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
@@ -166,6 +172,11 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
     @Override
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showNetworkError() {
+        showToast(getString(R.string.error_no_network));
     }
 
     protected void showAbout() {

@@ -51,6 +51,10 @@ public class PreferencesUtils {
         return mPref.getString(key, null);
     }
 
+    public String getString(String key, String defaultValue) {
+        return mPref.getString(key, defaultValue);
+    }
+
     public boolean isLoggedIn() {
         String apiToken = this.getData(PrefKeys.API_TOKEN.name());
 

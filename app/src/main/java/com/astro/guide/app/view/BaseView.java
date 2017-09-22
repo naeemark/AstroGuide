@@ -7,11 +7,16 @@ package com.astro.guide.app.view;
  */
 
 public interface BaseView {
-    void showProgress(String message);
 
-    void hideProgress();
+    void showLoading();
+
+    void showLoading(String message);
+
+    void hideLoading();
 
     void showErrorWithMessage(String errorText);
 
     void showToast(String message);
+
+    void showNetworkError();
 }

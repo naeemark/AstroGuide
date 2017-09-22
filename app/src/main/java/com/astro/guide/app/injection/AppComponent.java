@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.astro.guide.app.AstroGuideApp;
 import com.astro.guide.utils.PreferencesUtils;
+import com.astro.guide.utils.cache.AppCacheManager;
+import com.astro.guide.utils.parser.ChannelParser;
 
 import javax.inject.Singleton;
 
@@ -21,4 +23,8 @@ public interface AppComponent {
     PreferencesUtils exposePreferencesUtils();
 
     Retrofit exposeRetrofit();
+
+    ChannelParser exposeParser();
+
+    AppCacheManager exposeCacheManager();
 }

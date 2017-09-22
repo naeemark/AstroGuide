@@ -7,6 +7,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,14 +21,19 @@ import com.astro.guide.features.home.injection.DaggerHomeViewComponent;
 import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.view.HomeView;
+import com.astro.guide.features.home.view.adapter.ChannelsAdapter;
+import com.astro.guide.model.Channel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import timber.log.Timber;
 
-public class HomeActivity extends BaseActivity<HomePresenter, HomeView>
-        implements HomeView, NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implements HomeView, NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     PresenterFactory<HomePresenter> mPresenterFactory;
@@ -40,6 +47,13 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView>
     @BindView(R.id.nav_view)
     protected NavigationView navigationView;
 
+    @BindView(R.id.recyclerView_home)
+    protected RecyclerView mChannelsRecyclerView;
+
+    private ArrayList<Channel> mChannelList;
+
+    @Inject
+    protected ChannelsAdapter mChannelsAdapter;
 
     @Override
     protected void setupComponent(@NonNull AppComponent parentComponent) {
@@ -66,7 +80,18 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView>
         super.onViewReady(savedInstanceState, intent);
 
         initDrawerLayout();
+        initList();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+    }
+
+    private void loadData() {
+        assert mPresenter != null;
+        mPresenter.fetchDataFromApi();
     }
 
     private void initDrawerLayout() {
@@ -76,6 +101,13 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView>
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initList() {
+        mChannelsRecyclerView.setHasFixedSize(true);
+        mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mChannelsAdapter.hideFavoriteIcon();
+        mChannelsRecyclerView.setAdapter(mChannelsAdapter);
     }
 
     @Override
@@ -97,13 +129,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView>
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            assert mPresenter != null;
+            mPresenter.onRefreshClicked();
             return true;
         }
 
@@ -122,7 +152,30 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView>
 
     @OnClick(R.id.fab)
     public void onFabClicked() {
+        assert mPresenter != null;
         mPresenter.onFabClicked();
     }
 
+    @Override
+    public void showErrorLoading() {
+        super.showToast(getString(R.string.error_loading_data));
+    }
+
+    @Override
+    public void loadList(List<Channel> channelList) {
+        Timber.e("channelList: " + channelList.toString());
+        mChannelList = (ArrayList<Channel>) channelList;
+        showList();
+    }
+
+    @Override
+    public void showInfo() {
+        super.showAbout();
+    }
+
+    private void showList() {
+        mChannelsAdapter.clearList();
+        mChannelsAdapter.addChannels(mChannelList);
+        mChannelsAdapter.notifyDataSetChanged();
+    }
 }
