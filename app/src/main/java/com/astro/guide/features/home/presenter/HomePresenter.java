@@ -5,4 +5,7 @@ import com.astro.guide.features.home.view.HomeView;
 
 public interface HomePresenter extends BasePresenter<HomeView> {
 
+    void onFabClicked();
+
+    void onNavigationItemSelected(int itemId);
 }

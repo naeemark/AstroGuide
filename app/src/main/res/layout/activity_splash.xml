@@ -38,6 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_minimal"
             android:text="@string/loading_resources"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorAccent" />
     </LinearLayout>
 </RelativeLayout>

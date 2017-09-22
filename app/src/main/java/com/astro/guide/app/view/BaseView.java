@@ -12,4 +12,6 @@ public interface BaseView {
     void hideProgress();
 
     void showErrorWithMessage(String errorText);
+
+    void showToast(String message);
 }

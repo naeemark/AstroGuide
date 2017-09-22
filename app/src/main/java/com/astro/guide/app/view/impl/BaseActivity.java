@@ -163,7 +163,8 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
         showToast(errorText);
     }
 
-    protected void showToast(String message) {
+    @Override
+    public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
