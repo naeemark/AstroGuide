@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnClickListener, MaterialFavoriteButton.OnFavoriteChangeListener {
 
-    @BindView(R.id.logo_icon)
+    @BindView(R.id.imageView_logo)
     protected ImageView mLogoImageView;
     @BindView(R.id.textview_title)
     protected TextView mTitle;

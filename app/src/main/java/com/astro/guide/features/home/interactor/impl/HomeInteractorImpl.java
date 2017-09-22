@@ -3,17 +3,22 @@ package com.astro.guide.features.home.interactor.impl;
 import android.content.Context;
 
 import com.astro.guide.app.interactor.impl.BaseInteractorImpl;
+import com.astro.guide.constants.AppConstants;
 import com.astro.guide.features.home.interactor.HomeInteractor;
+import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.model.Channel;
+import com.astro.guide.model.UserSettings;
 import com.astro.guide.model.response.channel.ChannelsResponse;
 import com.astro.guide.utils.NetworkUtils;
 import com.astro.guide.utils.PreferencesUtils;
+import com.astro.guide.utils.SortUtils;
 import com.astro.guide.utils.cache.AppCacheManager;
 import com.astro.guide.utils.cache.CacheTag;
 import com.astro.guide.utils.parser.ChannelParser;
 import com.astro.guide.webapi.ChannelsApiService;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,14 +34,16 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     private final PreferencesUtils mPreferencesUtils;
     private final ChannelParser mChannelParser;
     private final AppCacheManager mCacheManager;
+    private final UserSettings mUserSettings;
 
     @Inject
-    public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager cacheManager) {
+    public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager cacheManager, UserSettings userSettings) {
         mContext = context;
         mApiService = channelsApiService;
         mPreferencesUtils = preferencesUtils;
         mChannelParser = channelParser;
         mCacheManager = cacheManager;
+        mUserSettings = userSettings;
     }
 
     @Override
@@ -92,5 +99,14 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     public void clearChannelsCache() {
         boolean clear = mCacheManager.clear(CacheTag.CHANNELS.name());
         Timber.e("clearChannelsCache: "+ clear);
+    }
+
+    @Override
+    public void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder, HomePresenter presenter) {
+        if(sortOrder.ordinal() == mUserSettings.getSortOrder()){
+            return;
+        }
+        mUserSettings.setSortOrder(sortOrder.ordinal());
+        presenter.onDataResponse(SortUtils.sortList(channelList, sortOrder));
     }
 }

@@ -15,4 +15,6 @@ public interface HomeView extends BaseView {
     void loadList(List<Channel> channelList);
 
     void showInfo();
+
+    void setSortButtonChecked(int sortOrderOrdinal);
 }

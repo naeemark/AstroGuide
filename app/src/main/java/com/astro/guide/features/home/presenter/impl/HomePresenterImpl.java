@@ -4,11 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.astro.guide.R;
 import com.astro.guide.app.presenter.impl.BasePresenterImpl;
+import com.astro.guide.constants.AppConstants;
 import com.astro.guide.features.home.interactor.HomeInteractor;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.view.HomeView;
 import com.astro.guide.model.Channel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -93,6 +95,11 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     public void onRefreshClicked() {
         mInteractor.clearChannelsCache();
         fetchDataFromApi();
+    }
+
+    @Override
+    public void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder) {
+        mInteractor.sortChannelsList(channelList, sortOrder, this);
     }
 
     @Override

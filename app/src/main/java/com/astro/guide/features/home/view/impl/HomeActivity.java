@@ -2,6 +2,7 @@ package com.astro.guide.features.home.view.impl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,11 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.astro.guide.R;
 import com.astro.guide.app.injection.AppComponent;
 import com.astro.guide.app.presenter.loader.PresenterFactory;
 import com.astro.guide.app.view.impl.BaseActivity;
+import com.astro.guide.constants.AppConstants;
 import com.astro.guide.features.home.injection.DaggerHomeViewComponent;
 import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
@@ -46,6 +50,17 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @BindView(R.id.nav_view)
     protected NavigationView navigationView;
+
+    @BindView(R.id.radioGroup_sort)
+    RadioGroup mSortRadioGroup;
+
+    @BindView(R.id.radioButton_sortByName)
+    RadioButton mNameRadioButton;
+
+    @BindView(R.id.radioButton_sortByNumber)
+    RadioButton mNumberRadioButton;
+
+    private RadioButton[] radioButtons;
 
     @BindView(R.id.recyclerView_home)
     protected RecyclerView mChannelsRecyclerView;
@@ -79,6 +94,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
 
+        setTitle(getString(R.string.title_activity_home));
+        initializeRadioButtons();
+
         initDrawerLayout();
         initList();
     }
@@ -102,6 +120,25 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    private void initializeRadioButtons() {
+        radioButtons = new RadioButton[]{mNameRadioButton, mNumberRadioButton};
+        mSortRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                assert mPresenter != null;
+                switch (checkedId) {
+                    case R.id.radioButton_sortByName:
+                        mPresenter.sortChannelsList(mChannelList, AppConstants.SortOrder.SORT_BY_NAME);
+                        break;
+                    case R.id.radioButton_sortByNumber:
+                        mPresenter.sortChannelsList(mChannelList, AppConstants.SortOrder.SORT_BY_NUMBER);
+                        break;
+                }
+            }
+        });
+    }
+
 
     private void initList() {
         mChannelsRecyclerView.setHasFixedSize(true);
@@ -177,5 +214,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         mChannelsAdapter.clearList();
         mChannelsAdapter.addChannels(mChannelList);
         mChannelsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setSortButtonChecked(int sortOrderOrdinal) {
+        radioButtons[sortOrderOrdinal].setChecked(true);
     }
 }

@@ -3,6 +3,7 @@ package com.astro.guide.app.injection;
 import android.content.Context;
 
 import com.astro.guide.app.AstroGuideApp;
+import com.astro.guide.model.UserSettings;
 import com.astro.guide.utils.PreferencesUtils;
 import com.astro.guide.utils.cache.AppCacheManager;
 import com.astro.guide.utils.parser.ChannelParser;
@@ -27,4 +28,6 @@ public interface AppComponent {
     ChannelParser exposeParser();
 
     AppCacheManager exposeCacheManager();
+
+    UserSettings provideUserSettings();
 }
