@@ -10,6 +10,7 @@ import com.astro.guide.R;
 import com.astro.guide.app.injection.AppComponent;
 import com.astro.guide.app.presenter.loader.PresenterFactory;
 import com.astro.guide.app.view.impl.BaseActivity;
+import com.astro.guide.features.home.view.impl.HomeActivity;
 
 import javax.inject.Inject;
 
@@ -64,8 +65,9 @@ public final class SplashActivity extends BaseActivity<SplashPresenter, SplashVi
     }
 
     @Override
-    public void launchChannelsActivity() {
-        // Todo:
+    public void launchNextActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     @Override

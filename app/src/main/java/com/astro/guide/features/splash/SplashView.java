@@ -13,7 +13,7 @@ public interface SplashView extends BaseView {
 
     void finishActivity();
 
-    void launchChannelsActivity();
+    void launchNextActivity();
 
     void showNetworkError();
 
