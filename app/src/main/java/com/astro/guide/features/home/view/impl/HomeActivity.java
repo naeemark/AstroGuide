@@ -127,6 +127,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 assert mPresenter != null;
+                assert mChannelList != null;
                 switch (checkedId) {
                     case R.id.radioButton_sortByName:
                         mPresenter.sortChannelsList(mChannelList, AppConstants.SortOrder.SORT_BY_NAME);
