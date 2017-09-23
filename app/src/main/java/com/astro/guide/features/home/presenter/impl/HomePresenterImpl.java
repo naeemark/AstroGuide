@@ -100,6 +100,11 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     }
 
     @Override
+    public void updateCache() {
+        mInteractor.updateCache();
+    }
+
+    @Override
     public void onStart() {
         assert mView != null;
         mView.showLoading();

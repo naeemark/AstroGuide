@@ -25,7 +25,7 @@ import com.astro.guide.features.home.injection.DaggerHomeViewComponent;
 import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.view.HomeView;
-import com.astro.guide.features.home.view.adapter.ChannelsAdapter;
+import com.astro.guide.features.home.view.adapter.ChannelsListAdapter;
 import com.astro.guide.model.Channel;
 
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     private ArrayList<Channel> mChannelList;
 
     @Inject
-    protected ChannelsAdapter mChannelsAdapter;
+    protected ChannelsListAdapter mChannelsListAdapter;
 
     @Override
     protected void setupComponent(@NonNull AppComponent parentComponent) {
@@ -138,8 +138,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     private void initList() {
         mChannelsRecyclerView.setHasFixedSize(true);
         mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mChannelsAdapter.hideFavoriteIcon();
-        mChannelsRecyclerView.setAdapter(mChannelsAdapter);
+        mChannelsRecyclerView.setAdapter(mChannelsListAdapter);
     }
 
     @Override
@@ -154,7 +153,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
@@ -195,7 +193,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @Override
     public void loadList(List<Channel> channelList) {
-        Timber.e("channelList: " + channelList.toString());
+        Timber.e("channelListSize: " + channelList.size());
         mChannelList = (ArrayList<Channel>) channelList;
         showList();
     }
@@ -206,13 +204,19 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     }
 
     private void showList() {
-        mChannelsAdapter.clearList();
-        mChannelsAdapter.addChannels(mChannelList);
-        mChannelsAdapter.notifyDataSetChanged();
+        mChannelsListAdapter.clearList();
+        mChannelsListAdapter.addChannels(mChannelList);
+        mChannelsListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void setSortButtonChecked(int sortOrderOrdinal) {
         radioButtons[sortOrderOrdinal].setChecked(true);
+    }
+
+    @Override
+    public void updateCache() {
+        Timber.e("updateCache()");
+        mPresenter.updateCache();
     }
 }

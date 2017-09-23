@@ -25,6 +25,8 @@ public interface HomeInteractor extends BaseInteractor {
 
     void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder, HomePresenter presenter);
 
+    void updateCache();
+
     interface OnFetchDataListener {
 
         void onStart();

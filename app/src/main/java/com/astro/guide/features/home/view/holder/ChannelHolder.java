@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.astro.guide.R;
+import com.astro.guide.features.home.view.HomeView;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -17,6 +19,7 @@ import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * @author Naeem <naeemark@gmail.com>
@@ -36,32 +39,31 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
     protected MaterialFavoriteButton mFavButton;
 
     private Context mContext;
-    private boolean mHideFav;
     private Channel mChannel;
-//    private AppUser mUserSettings;
 
+    private AppUser mAppUser;
 
-    public ChannelHolder(View itemView, boolean hideFav) {
+    public ChannelHolder(View itemView, AppUser appUser) {
         super(itemView);
+        mAppUser = appUser;
         mContext = itemView.getContext();
         setIsRecyclable(false);
         ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(this);
-        mHideFav = hideFav;
-//        mUserSettings = AstroApplication.appUserSettings;
     }
 
     public void setValues(Channel channel) {
+
         mChannel = channel;
         mTitle.setText(mChannel.getTitle());
         mNumber.setText(String.valueOf(mChannel.getStbNumber()));
 
-        if (!mHideFav) {
-            mFavButton.setFavorite(mChannel.isFavourite(), false);
-            mFavButton.setVisibility(View.VISIBLE);
-        } else {
+        if (mAppUser.isHideFavouriteButton()) {
             mFavButton.setVisibility(View.GONE);
+        } else {
+            showFavButton();
         }
+
 
         Glide.with(mContext)
                 .load(mChannel.getLogoUrl())
@@ -78,8 +80,13 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
 //        if (mUserSettings.getUserEmail() == null) {
 //            mFavButton.setOnClickListener(this);
 //        } else {
-//            mFavButton.setOnFavoriteChangeListener(this);
+        mFavButton.setOnFavoriteChangeListener(this);
 //        }
+    }
+
+    private void showFavButton() {
+        mFavButton.setFavorite(mAppUser.getFavouritesIds().contains(mChannel.getId()), false);
+        mFavButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -126,6 +133,16 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
     @Override
     public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
         mChannel.setFavourite(favorite);
-//        mUserSettings.updateFavourite(mContext, mChannel, favorite);
+        updateFavourite(mContext, mChannel, favorite);
+    }
+
+    public void updateFavourite(Context context, Channel channel, boolean isFavorite) {
+        if (mAppUser.getFavouritesIds().contains(channel.getId())) {
+            mAppUser.getFavouritesIds().remove(channel.getId());
+        } else {
+            mAppUser.getFavouritesIds().add(channel.getId());
+        }
+        Timber.e(mAppUser.toString());
+        ((HomeView) context).updateCache();
     }
 }

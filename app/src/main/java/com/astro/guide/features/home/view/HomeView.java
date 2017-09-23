@@ -17,4 +17,6 @@ public interface HomeView extends BaseView {
     void showInfo();
 
     void setSortButtonChecked(int sortOrderOrdinal);
+
+    void updateCache();
 }

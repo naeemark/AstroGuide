@@ -21,4 +21,6 @@ public interface HomePresenter extends BasePresenter<HomeView>, HomeInteractor.O
     void onRefreshClicked();
 
     void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder);
+
+    void updateCache();
 }

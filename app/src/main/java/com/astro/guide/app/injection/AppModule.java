@@ -9,6 +9,8 @@ import com.astro.guide.constants.AppConstants;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.utils.cache.AppCacheManager;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -31,6 +33,7 @@ public final class AppModule {
         return mApp;
     }
 
+    @Singleton
     @Provides
     public AppUser provideAppUser(Context context, AppCacheManager cacheManager){
         AppUser cachedAppUser = cacheManager.getAppUser();

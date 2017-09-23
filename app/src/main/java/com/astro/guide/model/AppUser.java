@@ -1,5 +1,8 @@
 package com.astro.guide.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -16,6 +19,10 @@ public class AppUser {
     private String email;
 
     private int sortOrder;
+
+    private boolean hideFavouriteButton;
+
+    private Set<Integer> favouritesIds = new HashSet<>();
 
     @Inject
     public AppUser(String name, String email, int sortOrder) {
@@ -48,12 +55,30 @@ public class AppUser {
         this.sortOrder = sortOrder;
     }
 
+    public boolean isHideFavouriteButton() {
+        return hideFavouriteButton;
+    }
+
+    public void setHideFavouriteButton(boolean hideFavouriteButton) {
+        this.hideFavouriteButton = hideFavouriteButton;
+    }
+
+    public Set<Integer> getFavouritesIds() {
+        return favouritesIds;
+    }
+
+    public void setFavouritesIds(Set<Integer> favouritesIds) {
+        this.favouritesIds = favouritesIds;
+    }
+
     @Override
     public String toString() {
         return "AppUser{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", sortOrder=" + sortOrder +
+                ", hideFavouriteButton=" + hideFavouriteButton +
+                ", favouritesIds=" + favouritesIds +
                 '}';
     }
 }

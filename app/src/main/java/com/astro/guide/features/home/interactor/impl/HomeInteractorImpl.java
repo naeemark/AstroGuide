@@ -120,7 +120,13 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
             return;
         }
         mAppUser.setSortOrder(sortOrder.ordinal());
-        mCacheManager.setAppUser(mAppUser);
+        updateCache();
         sortChannelsList(channelList, presenter);
+    }
+
+    @Override
+    public void updateCache() {
+        Timber.e(mAppUser.toString());
+        mCacheManager.setAppUser(mAppUser);
     }
 }
