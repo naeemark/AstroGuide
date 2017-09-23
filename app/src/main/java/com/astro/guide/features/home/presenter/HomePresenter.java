@@ -14,11 +14,7 @@ public interface HomePresenter extends BasePresenter<HomeView>, HomeInteractor.O
 
     void checkNetwork();
 
-    void showLoading();
-
-    void hideLoading();
-
-    void fetchDataFromApi();
+    void fetchData();
 
     void onNavigationItemSelected(int itemId);
 

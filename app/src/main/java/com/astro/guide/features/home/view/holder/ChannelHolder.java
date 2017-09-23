@@ -38,7 +38,7 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
     private Context mContext;
     private boolean mHideFav;
     private Channel mChannel;
-//    private UserSettings mUserSettings;
+//    private AppUser mUserSettings;
 
 
     public ChannelHolder(View itemView, boolean hideFav) {

@@ -101,15 +101,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         initList();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-    }
-
     private void loadData() {
         assert mPresenter != null;
-        mPresenter.fetchDataFromApi();
+        mPresenter.fetchData();
     }
 
     private void initDrawerLayout() {

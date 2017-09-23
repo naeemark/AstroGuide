@@ -3,12 +3,15 @@ package com.astro.guide.features.home.interactor;
 import com.astro.guide.app.interactor.BaseInteractor;
 import com.astro.guide.constants.AppConstants;
 import com.astro.guide.features.home.presenter.HomePresenter;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface HomeInteractor extends BaseInteractor {
+
+    AppUser getAppUser();
 
     boolean isNetworkConnected();
 
@@ -18,11 +21,17 @@ public interface HomeInteractor extends BaseInteractor {
 
     void clearChannelsCache();
 
+    void sortChannelsList(List<Channel> channelList, HomePresenter presenter);
+
     void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder, HomePresenter presenter);
 
     interface OnFetchDataListener {
 
+        void onStart();
+
         void onDataResponse(List<Channel> channelList);
+
+        void onListSorted(List<Channel> channelList);
 
         void onFailure(String message);
 

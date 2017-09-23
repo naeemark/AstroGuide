@@ -6,8 +6,8 @@ import com.astro.guide.app.interactor.impl.BaseInteractorImpl;
 import com.astro.guide.constants.AppConstants;
 import com.astro.guide.features.home.interactor.HomeInteractor;
 import com.astro.guide.features.home.presenter.HomePresenter;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
-import com.astro.guide.model.UserSettings;
 import com.astro.guide.model.response.channel.ChannelsResponse;
 import com.astro.guide.utils.NetworkUtils;
 import com.astro.guide.utils.PreferencesUtils;
@@ -34,16 +34,21 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     private final PreferencesUtils mPreferencesUtils;
     private final ChannelParser mChannelParser;
     private final AppCacheManager mCacheManager;
-    private final UserSettings mUserSettings;
+    private final AppUser mAppUser;
 
     @Inject
-    public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager cacheManager, UserSettings userSettings) {
+    public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager cacheManager, AppUser appUser) {
         mContext = context;
         mApiService = channelsApiService;
         mPreferencesUtils = preferencesUtils;
         mChannelParser = channelParser;
         mCacheManager = cacheManager;
-        mUserSettings = userSettings;
+        mAppUser = appUser;
+    }
+
+    @Override
+    public AppUser getAppUser() {
+        return mAppUser;
     }
 
     @Override
@@ -53,7 +58,7 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
 
     @Override
     public void fetchData(final OnFetchDataListener listener) {
-        String cachedData = mCacheManager.fetchTimed(CacheTag.CHANNELS.name());
+        String cachedData = mCacheManager.fetch(CacheTag.CHANNELS.name());
         if (cachedData != null && !cachedData.isEmpty()) {
             ChannelsResponse response = new Gson().fromJson(cachedData, ChannelsResponse.class);
             listener.onDataResponse(mChannelParser.parseChannels(response));
@@ -64,6 +69,7 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     }
 
     private void fetchDataFromApi(final OnFetchDataListener listener) {
+        listener.onStart();
 
         Observable<ChannelsResponse> observable = mApiService.getChannels();
 
@@ -82,7 +88,7 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
 
             @Override
             public void onNext(ChannelsResponse response) {
-                mCacheManager.saveForTimed(new Gson().toJson(response), CacheTag.CHANNELS.name());
+                mCacheManager.save(new Gson().toJson(response), CacheTag.CHANNELS.name());
                 List<Channel> channels = mChannelParser.parseChannels(response);
                 listener.onDataResponse(channels);
             }
@@ -102,11 +108,19 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     }
 
     @Override
+    public void sortChannelsList(List<Channel> channelList, HomePresenter presenter) {
+        presenter.onListSorted(SortUtils.sortList(channelList, AppConstants.SortOrder.values()[mAppUser.getSortOrder()]));
+    }
+
+    @Override
     public void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder, HomePresenter presenter) {
-        if(sortOrder.ordinal() == mUserSettings.getSortOrder()){
+        Timber.e("AppUser:"+ mAppUser.toString());
+        mAppUser.setName(mAppUser.getName()+(mAppUser.getName().length()-4));
+        if(sortOrder.ordinal() == mAppUser.getSortOrder()){
             return;
         }
-        mUserSettings.setSortOrder(sortOrder.ordinal());
-        presenter.onDataResponse(SortUtils.sortList(channelList, sortOrder));
+        mAppUser.setSortOrder(sortOrder.ordinal());
+        mCacheManager.setAppUser(mAppUser);
+        sortChannelsList(channelList, presenter);
     }
 }
