@@ -11,11 +11,15 @@
 
     <!--Home Activity-->
     <string name="title_activity_home">Channels</string>
+    <string name="title_activity_favourites">Favourites</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_refresh">Refresh</string>
     <string name="lbl_view_by_name">View by Name</string>
     <string name="lbl_view_by_number">View by Number</string>
     <string name="lbl_logo">Logo</string>
+    <string name="guest_user_name">Guest</string>
+    <string name="guest_user_email">guest@astro.guide</string>
+    <string name="lbl_no_list_items">No Items Found</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.astro.guide.features.home.view;
 import android.support.annotation.UiThread;
 
 import com.astro.guide.app.view.BaseView;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 
 import java.util.List;
@@ -16,5 +17,15 @@ public interface HomeView extends BaseView {
 
     void showInfo();
 
+    void setDrawerHeaderData(AppUser appUser);
+
     void setSortButtonChecked(int sortOrderOrdinal);
+
+    void updateCache();
+
+    void launchFavouritesListActivity();
+
+    boolean isForFavourites();
+
+    void showPrompt(String promptText);
 }

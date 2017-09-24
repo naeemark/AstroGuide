@@ -3,7 +3,9 @@ package com.astro.guide.utils.cache;
 import android.util.Log;
 
 import com.astro.guide.BuildConfig;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.utils.PreferencesUtils;
+import com.google.gson.Gson;
 
 import java.util.Calendar;
 
@@ -73,5 +75,18 @@ public class AppCacheManager {
 
     public boolean hasCache() {
         return mCacheManager.hasCacheContent();
+    }
+
+    public AppUser getAppUser() {
+        String settings = mPreferencesUtils.getString(CacheTag.APP_USER.name(), null);
+        if (settings == null || settings.length() == 0) {
+            return null;
+        }
+        return new Gson().fromJson(settings, AppUser.class);
+    }
+
+    public void setAppUser(AppUser appUser) {
+        String json = new Gson().toJson(appUser);
+        mPreferencesUtils.putData(CacheTag.APP_USER.name(), json);
     }
 }

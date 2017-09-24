@@ -8,4 +8,5 @@ package com.astro.guide.utils.cache;
 
 public enum CacheTag {
     CHANNELS,
+    APP_USER,
 }

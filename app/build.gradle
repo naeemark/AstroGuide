@@ -35,9 +35,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            versionNameSuffix " Debug"
+            versionNameSuffix "-debug"
             debuggable true
         }
+        renameBuildFile()
     }
 }
 
@@ -104,3 +105,12 @@ dependencies {
 }
 
 
+def renameBuildFile() {
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def file = output.outputFile
+            def newName = rootProject.name + "-v"+ versionName +"-"+ new Date().format('ddMMyy') + ".apk"
+            output.outputFile = new File(file.parent, newName)
+        }
+    }
+}

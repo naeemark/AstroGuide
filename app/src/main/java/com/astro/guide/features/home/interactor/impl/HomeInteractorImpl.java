@@ -2,12 +2,13 @@ package com.astro.guide.features.home.interactor.impl;
 
 import android.content.Context;
 
+import com.astro.guide.R;
 import com.astro.guide.app.interactor.impl.BaseInteractorImpl;
 import com.astro.guide.constants.AppConstants;
 import com.astro.guide.features.home.interactor.HomeInteractor;
 import com.astro.guide.features.home.presenter.HomePresenter;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
-import com.astro.guide.model.UserSettings;
 import com.astro.guide.model.response.channel.ChannelsResponse;
 import com.astro.guide.utils.NetworkUtils;
 import com.astro.guide.utils.PreferencesUtils;
@@ -34,16 +35,21 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     private final PreferencesUtils mPreferencesUtils;
     private final ChannelParser mChannelParser;
     private final AppCacheManager mCacheManager;
-    private final UserSettings mUserSettings;
+    private final AppUser mAppUser;
 
     @Inject
-    public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager cacheManager, UserSettings userSettings) {
+    public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager cacheManager, AppUser appUser) {
         mContext = context;
         mApiService = channelsApiService;
         mPreferencesUtils = preferencesUtils;
         mChannelParser = channelParser;
         mCacheManager = cacheManager;
-        mUserSettings = userSettings;
+        mAppUser = appUser;
+    }
+
+    @Override
+    public AppUser getAppUser() {
+        return mAppUser;
     }
 
     @Override
@@ -53,7 +59,7 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
 
     @Override
     public void fetchData(final OnFetchDataListener listener) {
-        String cachedData = mCacheManager.fetchTimed(CacheTag.CHANNELS.name());
+        String cachedData = mCacheManager.fetch(CacheTag.CHANNELS.name());
         if (cachedData != null && !cachedData.isEmpty()) {
             ChannelsResponse response = new Gson().fromJson(cachedData, ChannelsResponse.class);
             listener.onDataResponse(mChannelParser.parseChannels(response));
@@ -63,7 +69,27 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
         }
     }
 
+    @Override
+    public void fetchFavouritesData(OnFetchDataListener listener) {
+        String cachedData = mCacheManager.fetch(CacheTag.CHANNELS.name());
+        if (cachedData != null && !cachedData.isEmpty()) {
+            ChannelsResponse response = new Gson().fromJson(cachedData, ChannelsResponse.class);
+            List<Channel> channels = mChannelParser.parseChannels(response);
+            List<Channel> favouriteChannels = new ArrayList<>();
+
+            for (Channel channel : channels) {
+                if (mAppUser.getFavouritesIds().contains(channel.getId())){
+                    favouriteChannels.add(channel);
+                }
+            }
+            listener.onFetchedFavouritesData(favouriteChannels);
+        } else {
+            listener.onFailure(mContext.getString(R.string.error_loading_data));
+        }
+    }
+
     private void fetchDataFromApi(final OnFetchDataListener listener) {
+        listener.onStart();
 
         Observable<ChannelsResponse> observable = mApiService.getChannels();
 
@@ -82,7 +108,7 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
 
             @Override
             public void onNext(ChannelsResponse response) {
-                mCacheManager.saveForTimed(new Gson().toJson(response), CacheTag.CHANNELS.name());
+                mCacheManager.save(new Gson().toJson(response), CacheTag.CHANNELS.name());
                 List<Channel> channels = mChannelParser.parseChannels(response);
                 listener.onDataResponse(channels);
             }
@@ -102,11 +128,35 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     }
 
     @Override
+    public void sortChannelsList(List<Channel> channelList, HomePresenter presenter) {
+        presenter.onListSorted(SortUtils.sortList(channelList, AppConstants.SortOrder.values()[mAppUser.getSortOrder()]));
+    }
+
+    @Override
     public void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder, HomePresenter presenter) {
-        if(sortOrder.ordinal() == mUserSettings.getSortOrder()){
+        Timber.e("AppUser:"+ mAppUser.toString());
+        if(sortOrder.ordinal() == mAppUser.getSortOrder()){
             return;
         }
-        mUserSettings.setSortOrder(sortOrder.ordinal());
-        presenter.onDataResponse(SortUtils.sortList(channelList, sortOrder));
+        mAppUser.setSortOrder(sortOrder.ordinal());
+        updateCache();
+        sortChannelsList(channelList, presenter);
+    }
+
+    @Override
+    public void updateCache() {
+        Timber.e(mAppUser.toString());
+        mCacheManager.setAppUser(mAppUser);
+    }
+
+    @Override
+    public void setHideFavouriteButton(boolean hidden) {
+        mAppUser.setHideFavouriteButton(hidden);
+        mCacheManager.setAppUser(mAppUser);
+    }
+
+    @Override
+    public String getEmptyListPromptText() {
+        return mContext.getString(R.string.lbl_no_list_items);
     }
 }

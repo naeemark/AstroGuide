@@ -13,8 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.astro.guide.R;
 import com.astro.guide.app.injection.AppComponent;
@@ -25,7 +28,8 @@ import com.astro.guide.features.home.injection.DaggerHomeViewComponent;
 import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.view.HomeView;
-import com.astro.guide.features.home.view.adapter.ChannelsAdapter;
+import com.astro.guide.features.home.view.adapter.ChannelsListAdapter;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 
 import java.util.ArrayList;
@@ -39,17 +43,24 @@ import timber.log.Timber;
 
 public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implements HomeView, NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String EXTRA_IS_FOR_FAVOURITE = "EXTRA_IS_FOR_FAVOURITE";
     @Inject
     PresenterFactory<HomePresenter> mPresenterFactory;
 
     @BindView(R.id.toolbar)
-    protected Toolbar toolbar;
+    protected Toolbar mToolbar;
 
     @BindView(R.id.drawer_layout)
-    protected DrawerLayout drawer;
+    protected DrawerLayout mDrawerLayout;
 
     @BindView(R.id.nav_view)
-    protected NavigationView navigationView;
+    protected NavigationView mNavigationView;
+
+    protected ImageView mUserDpImageView;
+
+    protected TextView mUserNameTextView;
+
+    protected TextView mUserEmailTextView;
 
     @BindView(R.id.radioGroup_sort)
     RadioGroup mSortRadioGroup;
@@ -62,13 +73,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     private RadioButton[] radioButtons;
 
+    @BindView(R.id.textView_prompt)
+    protected TextView mPromptTextView;
+
     @BindView(R.id.recyclerView_home)
     protected RecyclerView mChannelsRecyclerView;
 
     private ArrayList<Channel> mChannelList;
 
     @Inject
-    protected ChannelsAdapter mChannelsAdapter;
+    protected ChannelsListAdapter mChannelsListAdapter;
 
     @Override
     protected void setupComponent(@NonNull AppComponent parentComponent) {
@@ -94,31 +108,46 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
 
-        setTitle(getString(R.string.title_activity_home));
-        initializeRadioButtons();
+        boolean isForFavorites = intent.getBooleanExtra(EXTRA_IS_FOR_FAVOURITE, false);
 
-        initDrawerLayout();
+        if(isForFavorites){
+            initElementsForFavourites();
+        }else {
+            initElements();
+        }
+
+        initializeRadioButtons();
         initList();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
+    private void initElements() {
+        setTitle(getString(R.string.title_activity_home));
+        initDrawerLayout();
+    }
+
+    private void initElementsForFavourites() {
+        setSupportActionBar(mToolbar);
+        showBackArrow();
+        setTitle(getString(R.string.title_activity_favourites));
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     private void loadData() {
         assert mPresenter != null;
-        mPresenter.fetchDataFromApi();
+        mPresenter.fetchData();
     }
 
     private void initDrawerLayout() {
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        mUserDpImageView = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.imageView_dp);
+        mUserNameTextView = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.textView_name);
+        mUserEmailTextView = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.textView_email);
     }
 
     private void initializeRadioButtons() {
@@ -140,12 +169,10 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         });
     }
 
-
     private void initList() {
         mChannelsRecyclerView.setHasFixedSize(true);
         mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mChannelsAdapter.hideFavoriteIcon();
-        mChannelsRecyclerView.setAdapter(mChannelsAdapter);
+        mChannelsRecyclerView.setAdapter(mChannelsListAdapter);
     }
 
     @Override
@@ -160,9 +187,19 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
+    }
+
+    /**
+     * Sets visibility for refresh on the base of Activity content type
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_refresh).setVisible(!isForFavourites());
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -184,7 +221,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         assert mPresenter != null;
         mPresenter.onNavigationItemSelected(item.getItemId());
 
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -201,7 +238,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @Override
     public void loadList(List<Channel> channelList) {
-        Timber.e("channelList: " + channelList.toString());
+        Timber.e("channelListSize: " + channelList.size());
         mChannelList = (ArrayList<Channel>) channelList;
         showList();
     }
@@ -211,14 +248,48 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         super.showAbout();
     }
 
+    @Override
+    public void setDrawerHeaderData(AppUser appUser) {
+        if(appUser!=null) {
+            mUserNameTextView.setText(appUser.getName());
+            mUserEmailTextView.setText(appUser.getEmail());
+        }
+    }
+
     private void showList() {
-        mChannelsAdapter.clearList();
-        mChannelsAdapter.addChannels(mChannelList);
-        mChannelsAdapter.notifyDataSetChanged();
+        mChannelsListAdapter.clearList();
+        mChannelsListAdapter.addChannels(mChannelList);
+        mChannelsListAdapter.notifyDataSetChanged();
+        mChannelsRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void setSortButtonChecked(int sortOrderOrdinal) {
         radioButtons[sortOrderOrdinal].setChecked(true);
+    }
+
+    @Override
+    public void updateCache() {
+        Timber.e("updateCache()");
+        assert mPresenter != null;
+        mPresenter.updateCache();
+    }
+
+    @Override
+    public void launchFavouritesListActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra(EXTRA_IS_FOR_FAVOURITE, true);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean isForFavourites() {
+        return getIntent().getBooleanExtra(EXTRA_IS_FOR_FAVOURITE, false);
+    }
+
+    @Override
+    public void showPrompt(String promptText) {
+        mPromptTextView.setText(promptText);
+        mPromptTextView.setVisibility(View.VISIBLE);
     }
 }

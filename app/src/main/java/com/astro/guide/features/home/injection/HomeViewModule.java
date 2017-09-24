@@ -9,7 +9,7 @@ import com.astro.guide.features.home.interactor.HomeInteractor;
 import com.astro.guide.features.home.interactor.impl.HomeInteractorImpl;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.presenter.impl.HomePresenterImpl;
-import com.astro.guide.model.UserSettings;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.utils.PreferencesUtils;
 import com.astro.guide.utils.cache.AppCacheManager;
 import com.astro.guide.utils.parser.ChannelParser;
@@ -23,7 +23,7 @@ import retrofit2.Retrofit;
 public final class HomeViewModule {
 
     @Provides
-    public HomeInteractor provideInteractor(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser parser, AppCacheManager cacheManager, UserSettings userSettings) {
+    public HomeInteractor provideInteractor(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser parser, AppCacheManager cacheManager, AppUser userSettings) {
         return new HomeInteractorImpl(context, channelsApiService, preferencesUtils, parser, cacheManager, userSettings);
     }
 

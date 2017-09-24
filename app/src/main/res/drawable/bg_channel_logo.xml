@@ -8,5 +8,5 @@
         android:bottomLeftRadius="@dimen/card_corner_radius"
         android:topLeftRadius="@dimen/card_corner_radius"/>
 
-    <solid android:color="@color/colorDim"/>
+    <solid android:color="@color/colorAccentDim"/>
 </shape>

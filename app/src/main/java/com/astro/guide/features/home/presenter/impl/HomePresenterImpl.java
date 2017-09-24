@@ -29,6 +29,25 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
         mInteractor = interactor;
     }
 
+    @Override
+    public void onStart(boolean viewCreated) {
+        super.onStart(viewCreated);
+
+        Timber.e("onStart:" + mInteractor.getAppUser().toString());
+        if (viewCreated) {
+            // nothing to do with firstStart
+        }
+        assert mView != null;
+        mView.setSortButtonChecked(mInteractor.getAppUser().getSortOrder());
+        if (mView.isForFavourites()) {
+            mInteractor.setHideFavouriteButton(true);
+            fetchFavouritesData();
+        } else {
+            mView.setDrawerHeaderData(mInteractor.getAppUser());
+            mInteractor.setHideFavouriteButton(false);
+            fetchData();
+        }
+    }
 
     @Override
     public void onStop() {
@@ -51,27 +70,19 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     }
 
     @Override
-    public void fetchDataFromApi() {
-        showLoading();
+    public void fetchData() {
         mInteractor.fetchData(this);
     }
 
-    @Override
-    public void showLoading() {
-        assert mView != null;
-        mView.showLoading();
-    }
-
-    @Override
-    public void hideLoading() {
-        assert mView != null;
-        mView.hideLoading();
+    private void fetchFavouritesData() {
+        mInteractor.fetchFavouritesData(this);
     }
 
     @Override
     public void onFabClicked() {
         assert mView != null;
         mView.showToast("onFabClicked()");
+        mView.launchFavouritesListActivity();
     }
 
     @Override
@@ -94,7 +105,7 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     @Override
     public void onRefreshClicked() {
         mInteractor.clearChannelsCache();
-        fetchDataFromApi();
+        fetchData();
     }
 
     @Override
@@ -103,22 +114,48 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     }
 
     @Override
+    public void updateCache() {
+        mInteractor.updateCache();
+    }
+
+    @Override
+    public void onStart() {
+        assert mView != null;
+        mView.showLoading();
+    }
+
+    @Override
     public void onDataResponse(List<Channel> channelList) {
         Timber.i(String.valueOf(channelList.size()));
+        mInteractor.sortChannelsList(channelList, this);
+    }
+
+    @Override
+    public void onFetchedFavouritesData(List<Channel> channelList) {
+        mInteractor.sortChannelsList(channelList, this);
+    }
+
+    @Override
+    public void onListSorted(List<Channel> channelList) {
         assert mView != null;
+        if (channelList.isEmpty()){
+            mView.showPrompt(mInteractor.getEmptyListPromptText());
+        }
+
         mView.loadList(channelList);
     }
 
     @Override
     public void onFailure(String message) {
-        hideLoading();
         Timber.d(message);
         assert mView != null;
+        mView.hideLoading();
         mView.showErrorLoading();
     }
 
     @Override
     public void onComplete() {
-        hideLoading();
+        assert mView != null;
+        mView.hideLoading();
     }
 }

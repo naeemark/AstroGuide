@@ -14,15 +14,13 @@ public interface HomePresenter extends BasePresenter<HomeView>, HomeInteractor.O
 
     void checkNetwork();
 
-    void showLoading();
-
-    void hideLoading();
-
-    void fetchDataFromApi();
+    void fetchData();
 
     void onNavigationItemSelected(int itemId);
 
     void onRefreshClicked();
 
     void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder);
+
+    void updateCache();
 }
