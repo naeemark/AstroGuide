@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/radioGroup_sort"
+    style="@style/SortButtonGroup">
+
+    <RadioButton
+        android:id="@+id/radioButton_sortByName"
+        style="@style/SortButton"
+        android:checked="true"
+        android:text="@string/lbl_view_by_name"/>
+
+    <RadioButton
+        android:id="@+id/radioButton_sortByNumber"
+        style="@style/SortButton"
+        android:text="@string/lbl_view_by_number"/>
+</RadioGroup>

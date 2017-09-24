@@ -1,7 +1,6 @@
 # Astro Guide #
 
 Demonstration of Requirements understanding, proposing a solution and implementation by using latest tools and techniques. The code is based on Google Android SDK.
-Developed as an assignment for Astro.
 
 ### What is this repository for? ###
 
@@ -17,12 +16,14 @@ _to be provided later_
 
 ## How do I get set up? ##
 
-###How to set up ###
+### How to set up ###
 To setup you need to clone this repo, from `master` or `develop` branch or some latest `TAG`
-### Configuration###
+
+### Configuration ###
 Please sync and resolve dependencies
 
-## Requirements
+
+## Requirements ##
 
 - JDK 1.8
 - [Android SDK](http://developer.android.com/sdk/index.html).
@@ -30,7 +31,7 @@ Please sync and resolve dependencies
 - Latest Android SDK Tools and build tools.
 
 
-## Libraries and tools included:
+## Libraries and tools included: ##
 
 - Support libraries
 - RecyclerViews and CardViews
@@ -42,13 +43,12 @@ Please sync and resolve dependencies
 - [Glide](https://github.com/bumptech/glide)
 - Functional tests with [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/index.html)
 - [Mockito](http://mockito.org/)
-- [Checkstyle](http://checkstyle.sourceforge.net/), [PMD](https://pmd.github.io/) and [Findbugs](http://findbugs.sourceforge.net/) for code analysis
 
 
 ## Storage ##
 ### Local Storage ###
 
-- [`SharedPreferences`](https://developer.android.com/reference/android/content/SharedPreferences.html) are used for session storage
+- [`SharedPreferences`](https://developer.android.com/reference/android/content/SharedPreferences.html) are used for local persistance of preferences
 
 ### Remote Storage ###
 #### SSO Auth ####
@@ -57,21 +57,21 @@ Please sync and resolve dependencies
 - Using `AWS-EC2` instance with `Flask` app deployed to persist settings agaings a logged-in user. 
 
 
-## External Tools:
+## External Tools: ##
 
 - API-response DTOs are created by using [JSON2Schema](http://www.jsonschema2pojo.org/)
 
 
-## Code Quality
+## Code Quality ##
 
 Used `Android Lint` and `SonarLint`
 
-## Distribution
+## Distribution ##
 
 The project can be distributed using [Google Play Store](https://github.com/Triple-T/gradle-play-publisher).
 
 
-### Contribution guidelines ###
+## Contribution guidelines ##
 
 - forks are always appreciated
 

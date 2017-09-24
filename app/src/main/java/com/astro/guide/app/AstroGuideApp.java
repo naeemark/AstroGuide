@@ -7,8 +7,11 @@ import com.astro.guide.BuildConfig;
 import com.astro.guide.app.injection.AppComponent;
 import com.astro.guide.app.injection.AppModule;
 import com.astro.guide.app.injection.DaggerAppComponent;
+import com.astro.guide.app.injection.NetworkApiModule;
 
 import timber.log.Timber;
+
+import static com.astro.guide.constants.ServerConstant.BASE_URL;
 
 public final class AstroGuideApp extends Application {
     private AppComponent mAppComponent;
@@ -23,6 +26,7 @@ public final class AstroGuideApp extends Application {
 
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
+                .networkApiModule(new NetworkApiModule(BASE_URL))
                 .build();
     }
 

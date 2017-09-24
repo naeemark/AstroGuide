@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_channels"
+            android:icon="@drawable/ic_menu_channels"
+            android:title="Channels"/>
+        <item
+            android:id="@+id/nav_epg"
+            android:icon="@drawable/ic_menu_epg"
+            android:title="TV Guide"/>
+    </group>
+
+    <item android:title="Account" android:visible="false">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/ic_menu_settings"
+                android:title="Login"/>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_settings"
+                android:title="Logout"/>
+        </menu>
+    </item>
+    <item android:title="Info">
+        <menu>
+            <item
+                android:id="@+id/nav_info"
+                android:icon="@drawable/ic_menu_info"
+                android:title="About"/>
+        </menu>
+    </item>
+
+</menu>
