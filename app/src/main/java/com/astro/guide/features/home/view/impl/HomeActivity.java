@@ -130,6 +130,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         showBackArrow();
         setTitle(getString(R.string.title_activity_favourites));
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        findViewById(R.id.fab).setVisibility(View.GONE);
     }
 
     private void loadData() {
