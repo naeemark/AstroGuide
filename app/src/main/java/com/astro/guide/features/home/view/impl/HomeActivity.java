@@ -13,8 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.astro.guide.R;
 import com.astro.guide.app.injection.AppComponent;
@@ -26,6 +28,7 @@ import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.view.HomeView;
 import com.astro.guide.features.home.view.adapter.ChannelsListAdapter;
+import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 
 import java.util.ArrayList;
@@ -43,13 +46,19 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     PresenterFactory<HomePresenter> mPresenterFactory;
 
     @BindView(R.id.toolbar)
-    protected Toolbar toolbar;
+    protected Toolbar mToolbar;
 
     @BindView(R.id.drawer_layout)
-    protected DrawerLayout drawer;
+    protected DrawerLayout mDrawerLayout;
 
     @BindView(R.id.nav_view)
-    protected NavigationView navigationView;
+    protected NavigationView mNavigationView;
+
+    protected ImageView mUserDpImageView;
+
+    protected TextView mUserNameTextView;
+
+    protected TextView mUserEmailTextView;
 
     @BindView(R.id.radioGroup_sort)
     RadioGroup mSortRadioGroup;
@@ -107,12 +116,16 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     }
 
     private void initDrawerLayout() {
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        mUserDpImageView = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.imageView_dp);
+        mUserNameTextView = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.textView_name);
+        mUserEmailTextView = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.textView_email);
     }
 
     private void initializeRadioButtons() {
@@ -176,7 +189,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         assert mPresenter != null;
         mPresenter.onNavigationItemSelected(item.getItemId());
 
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -201,6 +214,14 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     @Override
     public void showInfo() {
         super.showAbout();
+    }
+
+    @Override
+    public void setDrawerHeaderData(AppUser appUser) {
+        if(appUser!=null) {
+            mUserNameTextView.setText(appUser.getName());
+            mUserEmailTextView.setText(appUser.getEmail());
+        }
     }
 
     private void showList() {

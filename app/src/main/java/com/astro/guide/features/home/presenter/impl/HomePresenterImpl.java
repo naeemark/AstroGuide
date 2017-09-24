@@ -35,6 +35,7 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
 
         if (viewCreated) {
             assert mView != null;
+            mView.setDrawerHeaderData(mInteractor.getAppUser());
             mView.setSortButtonChecked(mInteractor.getAppUser().getSortOrder());
             fetchData();
         }

@@ -115,7 +115,6 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     @Override
     public void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder, HomePresenter presenter) {
         Timber.e("AppUser:"+ mAppUser.toString());
-        mAppUser.setName(mAppUser.getName()+(mAppUser.getName().length()-4));
         if(sortOrder.ordinal() == mAppUser.getSortOrder()){
             return;
         }
