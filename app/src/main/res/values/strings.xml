@@ -20,5 +20,6 @@
     <string name="lbl_logo">Logo</string>
     <string name="guest_user_name">Guest</string>
     <string name="guest_user_email">guest@astro.guide</string>
+    <string name="lbl_no_list_items">No Items Found</string>
 
 </resources>

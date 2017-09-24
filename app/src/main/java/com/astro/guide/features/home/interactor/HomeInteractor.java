@@ -17,6 +17,8 @@ public interface HomeInteractor extends BaseInteractor {
 
     void fetchData(OnFetchDataListener listener);
 
+    void fetchFavouritesData(OnFetchDataListener listener);
+
     void cancelOnGoingHttpRequest();
 
     void clearChannelsCache();
@@ -27,11 +29,17 @@ public interface HomeInteractor extends BaseInteractor {
 
     void updateCache();
 
+    void setHideFavouriteButton(boolean hidden);
+
+    String getEmptyListPromptText();
+
     interface OnFetchDataListener {
 
         void onStart();
 
         void onDataResponse(List<Channel> channelList);
+
+        void onFetchedFavouritesData(List<Channel> channelList);
 
         void onListSorted(List<Channel> channelList);
 

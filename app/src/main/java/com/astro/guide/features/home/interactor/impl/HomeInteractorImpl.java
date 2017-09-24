@@ -2,6 +2,7 @@ package com.astro.guide.features.home.interactor.impl;
 
 import android.content.Context;
 
+import com.astro.guide.R;
 import com.astro.guide.app.interactor.impl.BaseInteractorImpl;
 import com.astro.guide.constants.AppConstants;
 import com.astro.guide.features.home.interactor.HomeInteractor;
@@ -68,6 +69,25 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
         }
     }
 
+    @Override
+    public void fetchFavouritesData(OnFetchDataListener listener) {
+        String cachedData = mCacheManager.fetch(CacheTag.CHANNELS.name());
+        if (cachedData != null && !cachedData.isEmpty()) {
+            ChannelsResponse response = new Gson().fromJson(cachedData, ChannelsResponse.class);
+            List<Channel> channels = mChannelParser.parseChannels(response);
+            List<Channel> favouriteChannels = new ArrayList<>();
+
+            for (Channel channel : channels) {
+                if (mAppUser.getFavouritesIds().contains(channel.getId())){
+                    favouriteChannels.add(channel);
+                }
+            }
+            listener.onFetchedFavouritesData(favouriteChannels);
+        } else {
+            listener.onFailure(mContext.getString(R.string.error_loading_data));
+        }
+    }
+
     private void fetchDataFromApi(final OnFetchDataListener listener) {
         listener.onStart();
 
@@ -127,5 +147,16 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     public void updateCache() {
         Timber.e(mAppUser.toString());
         mCacheManager.setAppUser(mAppUser);
+    }
+
+    @Override
+    public void setHideFavouriteButton(boolean hidden) {
+        mAppUser.setHideFavouriteButton(hidden);
+        mCacheManager.setAppUser(mAppUser);
+    }
+
+    @Override
+    public String getEmptyListPromptText() {
+        return mContext.getString(R.string.lbl_no_list_items);
     }
 }

@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -23,7 +24,6 @@ import com.astro.guide.app.injection.AppComponent;
 import com.astro.guide.app.presenter.loader.PresenterFactory;
 import com.astro.guide.app.view.impl.BaseActivity;
 import com.astro.guide.constants.AppConstants;
-import com.astro.guide.features.favourite.view.impl.FavouritesListActivity;
 import com.astro.guide.features.home.injection.DaggerHomeViewComponent;
 import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
@@ -43,6 +43,7 @@ import timber.log.Timber;
 
 public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implements HomeView, NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String EXTRA_IS_FOR_FAVOURITE = "EXTRA_IS_FOR_FAVOURITE";
     @Inject
     PresenterFactory<HomePresenter> mPresenterFactory;
 
@@ -71,6 +72,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     RadioButton mNumberRadioButton;
 
     private RadioButton[] radioButtons;
+
+    @BindView(R.id.textView_prompt)
+    protected TextView mPromptTextView;
 
     @BindView(R.id.recyclerView_home)
     protected RecyclerView mChannelsRecyclerView;
@@ -104,11 +108,28 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
 
-        setTitle(getString(R.string.title_activity_home));
-        initializeRadioButtons();
+        boolean isForFavorites = intent.getBooleanExtra(EXTRA_IS_FOR_FAVOURITE, false);
 
-        initDrawerLayout();
+        if(isForFavorites){
+            initElementsForFavourites();
+        }else {
+            initElements();
+        }
+
+        initializeRadioButtons();
         initList();
+    }
+
+    private void initElements() {
+        setTitle(getString(R.string.title_activity_home));
+        initDrawerLayout();
+    }
+
+    private void initElementsForFavourites() {
+        setSupportActionBar(mToolbar);
+        showBackArrow();
+        setTitle(getString(R.string.title_activity_favourites));
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     private void loadData() {
@@ -148,7 +169,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         });
     }
 
-
     private void initList() {
         mChannelsRecyclerView.setHasFixedSize(true);
         mChannelsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -169,6 +189,17 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
+    }
+
+    /**
+     * Sets visibility for refresh on the base of Activity content type
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_refresh).setVisible(!isForFavourites());
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -229,6 +260,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         mChannelsListAdapter.clearList();
         mChannelsListAdapter.addChannels(mChannelList);
         mChannelsListAdapter.notifyDataSetChanged();
+        mChannelsRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -239,12 +271,25 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     @Override
     public void updateCache() {
         Timber.e("updateCache()");
+        assert mPresenter != null;
         mPresenter.updateCache();
     }
 
     @Override
     public void launchFavouritesListActivity() {
-        Intent intent = new Intent(this, FavouritesListActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra(EXTRA_IS_FOR_FAVOURITE, true);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean isForFavourites() {
+        return getIntent().getBooleanExtra(EXTRA_IS_FOR_FAVOURITE, false);
+    }
+
+    @Override
+    public void showPrompt(String promptText) {
+        mPromptTextView.setText(promptText);
+        mPromptTextView.setVisibility(View.VISIBLE);
     }
 }

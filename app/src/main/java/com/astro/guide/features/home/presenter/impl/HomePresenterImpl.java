@@ -33,10 +33,18 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     public void onStart(boolean viewCreated) {
         super.onStart(viewCreated);
 
+        Timber.e("onStart:" + mInteractor.getAppUser().toString());
         if (viewCreated) {
-            assert mView != null;
+            // nothing to do with firstStart
+        }
+        assert mView != null;
+        mView.setSortButtonChecked(mInteractor.getAppUser().getSortOrder());
+        if (mView.isForFavourites()) {
+            mInteractor.setHideFavouriteButton(true);
+            fetchFavouritesData();
+        } else {
             mView.setDrawerHeaderData(mInteractor.getAppUser());
-            mView.setSortButtonChecked(mInteractor.getAppUser().getSortOrder());
+            mInteractor.setHideFavouriteButton(false);
             fetchData();
         }
     }
@@ -64,6 +72,10 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     @Override
     public void fetchData() {
         mInteractor.fetchData(this);
+    }
+
+    private void fetchFavouritesData() {
+        mInteractor.fetchFavouritesData(this);
     }
 
     @Override
@@ -119,8 +131,17 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     }
 
     @Override
+    public void onFetchedFavouritesData(List<Channel> channelList) {
+        mInteractor.sortChannelsList(channelList, this);
+    }
+
+    @Override
     public void onListSorted(List<Channel> channelList) {
         assert mView != null;
+        if (channelList.isEmpty()){
+            mView.showPrompt(mInteractor.getEmptyListPromptText());
+        }
+
         mView.loadList(channelList);
     }
 

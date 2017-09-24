@@ -27,10 +27,6 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-            android:name=".features.favourite.view.impl.FavouritesListActivity"
-            android:label="@string/title_activity_favourites">
-        </activity>
     </application>
 
 </manifest>

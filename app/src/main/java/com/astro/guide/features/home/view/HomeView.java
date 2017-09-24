@@ -24,4 +24,8 @@ public interface HomeView extends BaseView {
     void updateCache();
 
     void launchFavouritesListActivity();
+
+    boolean isForFavourites();
+
+    void showPrompt(String promptText);
 }
