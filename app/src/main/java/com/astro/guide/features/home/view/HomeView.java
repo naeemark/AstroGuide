@@ -22,4 +22,6 @@ public interface HomeView extends BaseView {
     void setSortButtonChecked(int sortOrderOrdinal);
 
     void updateCache();
+
+    void launchFavouritesListActivity();
 }

@@ -11,6 +11,7 @@
 
     <!--Home Activity-->
     <string name="title_activity_home">Channels</string>
+    <string name="title_activity_favourites">Favourites</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_refresh">Refresh</string>

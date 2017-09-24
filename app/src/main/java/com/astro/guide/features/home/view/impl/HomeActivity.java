@@ -23,6 +23,7 @@ import com.astro.guide.app.injection.AppComponent;
 import com.astro.guide.app.presenter.loader.PresenterFactory;
 import com.astro.guide.app.view.impl.BaseActivity;
 import com.astro.guide.constants.AppConstants;
+import com.astro.guide.features.favourite.view.impl.FavouritesListActivity;
 import com.astro.guide.features.home.injection.DaggerHomeViewComponent;
 import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
@@ -239,5 +240,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     public void updateCache() {
         Timber.e("updateCache()");
         mPresenter.updateCache();
+    }
+
+    @Override
+    public void launchFavouritesListActivity() {
+        Intent intent = new Intent(this, FavouritesListActivity.class);
+        startActivity(intent);
     }
 }

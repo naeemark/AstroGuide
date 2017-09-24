@@ -70,6 +70,7 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     public void onFabClicked() {
         assert mView != null;
         mView.showToast("onFabClicked()");
+        mView.launchFavouritesListActivity();
     }
 
     @Override
