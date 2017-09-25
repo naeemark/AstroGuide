@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import timber.log.Timber;
+
 /**
  * @author Naeem <naeemark@gmail.com>
  * @version 1.0.0
@@ -41,10 +43,10 @@ public class DateTimeUtils {
 
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR, -6);
-        String startTime =  sdf.format(now.getTime());
+        String startTime = sdf.format(now.getTime());
 
-        now.add(Calendar.HOUR, 7);
-        String endTime =  sdf.format(now.getTime());
+        now.add(Calendar.HOUR, 10);
+        String endTime = sdf.format(now.getTime());
 
         return new String[]{startTime, endTime};
     }
@@ -62,7 +64,7 @@ public class DateTimeUtils {
             tempDate.setHours(diffHours);
             tempDate.setMinutes(diffMinutes);
 
-            String paramId = "GMT"+((dateUtc.getTime() > dateLocal.getTime()) ? "-" : "+") + new SimpleDateFormat("HH:mm").format(tempDate);
+            String paramId = "GMT" + ((dateUtc.getTime() > dateLocal.getTime()) ? "-" : "+") + new SimpleDateFormat("HH:mm").format(tempDate);
 
             return TimeZone.getTimeZone(paramId).getDisplayName();
 
@@ -73,6 +75,42 @@ public class DateTimeUtils {
     }
 
     public static boolean isEventAlive(Event event) throws ParseException {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        SimpleDateFormat parser = new SimpleDateFormat("HH:mm:ss");
+
+        TimeZone aDefault = TimeZone.getDefault();
+        Log.e("DIFFX", "D:" + aDefault.getDisplayName());
+
+
+        TimeZone.setDefault(TimeZone.getTimeZone(DateTimeUtils.getServerTimeZoneId(event.getDisplayDateTimeUtc(), event.getDisplayDateTime(), sdfDate)));
+        sdfDate.setTimeZone(TimeZone.getDefault());
+        parser.setTimeZone(TimeZone.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        Log.e("DIFFX", "D:" + TimeZone.getDefault().getDisplayName());
+
+
+        Date startDate = sdfDate.parse(event.getDisplayDateTime());
+
+
+        calendar.setTime(startDate);
+
+        Date showTime = parser.parse(event.getDisplayDuration());
+
+        calendar.add(Calendar.HOUR_OF_DAY, showTime.getHours());
+        calendar.add(Calendar.MINUTE, showTime.getMinutes());
+        calendar.add(Calendar.SECOND, showTime.getSeconds());
+
+        Date endDate = calendar.getTime();
+
+
+        TimeZone.setDefault(aDefault);
+        Log.e("DIFFX", "D:" + TimeZone.getDefault().getDisplayName());
+        return date.after(startDate) && date.before(endDate);
+    }
+
+
+    public static boolean isEventAliveO(Event event) throws ParseException {
 
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 
@@ -100,30 +138,20 @@ public class DateTimeUtils {
         Date endDate = c.getTime();
 
 
-        Log.e("DIFFX", "D:"+TimeZone.getDefault().getDisplayName());
+        Log.e("DIFFX", "D:" + TimeZone.getDefault().getDisplayName());
 
         return date.after(startDate) && date.before(endDate);
     }
 
     public static String getFormatedDateTime(Event event) throws ParseException {
+        Timber.e("1" + TimeZone.getDefault().getDisplayName());
+
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 
-
         sdfDate.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date parse = sdfDate.parse(event.getDisplayDateTimeUtc());
-
-
-        Calendar c = Calendar.getInstance(TimeZone.getDefault());
-
-        sdf.setTimeZone(TimeZone.getTimeZone(DateTimeUtils.getServerTimeZoneId(event.getDisplayDateTimeUtc(), event.getDisplayDateTime(), sdfDate)));
-
-        TimeZone tz = TimeZone.getDefault();
-
-        SimpleDateFormat destFormat = new SimpleDateFormat("hh:mm a");
-        destFormat.setTimeZone(tz);
-
-        return destFormat.format(parse);
+        return sdf.format(parse);
     }
 
     public static String convertDateToTime(Event event) throws ParseException {
@@ -146,11 +174,10 @@ public class DateTimeUtils {
     }
 
 
-
     public static Event getCurrentEvent(List<Event> events) {
         for (Event event : events) {
             try {
-                if(isEventAlive(event)){
+                if (isEventAlive(event)) {
                     return event;
                 }
             } catch (ParseException e) {

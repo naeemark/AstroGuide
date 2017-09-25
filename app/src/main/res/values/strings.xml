@@ -22,5 +22,7 @@
     <string name="guest_user_name">Guest</string>
     <string name="guest_user_email">guest@astro.guide</string>
     <string name="lbl_no_list_items">No Items Found</string>
+    <string name="prefix_event_time_on_air">Starts At: %s</string>
+    <string name="prompt_no_event_found">No event available!</string>
 
 </resources>

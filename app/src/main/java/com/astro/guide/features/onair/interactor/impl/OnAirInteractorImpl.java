@@ -30,6 +30,8 @@ import rx.Observable;
 import rx.Observer;
 import timber.log.Timber;
 
+import static com.astro.guide.utils.SortUtils.sortList;
+
 public final class OnAirInteractorImpl extends BaseInteractorImpl implements OnAirInteractor {
 
     private final Context mContext;
@@ -98,7 +100,7 @@ public final class OnAirInteractorImpl extends BaseInteractorImpl implements OnA
 
     @Override
     public void sortChannelsList(List<Channel> channelList, OnAirPresenter presenter) {
-        presenter.onListSorted(SortUtils.sortList(channelList, AppConstants.SortOrder.values()[mAppUser.getSortOrder()]));
+        presenter.onListSorted(sortList(channelList, AppConstants.SortOrder.values()[mAppUser.getSortOrder()]));
     }
 
     @Override
@@ -123,6 +125,7 @@ public final class OnAirInteractorImpl extends BaseInteractorImpl implements OnA
         if (cachedData != null && !cachedData.isEmpty()) {
             ChannelsResponse response = new Gson().fromJson(cachedData, ChannelsResponse.class);
             List<Channel> channels = mChannelParser.parseChannels(response);
+            channels = SortUtils.sortList(channels, AppConstants.SortOrder.SORT_BY_NUMBER);
             for (Channel channel : channels) {
                 map.put(channel.getId(), channel);
                 if (map.size() == 10)

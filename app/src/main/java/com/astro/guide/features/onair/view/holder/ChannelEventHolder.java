@@ -17,6 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import java.text.ParseException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -60,10 +62,15 @@ public class ChannelEventHolder extends RecyclerView.ViewHolder {
         Event currentEvent = DateTimeUtils.getCurrentEvent(channel.getEvents());
 
         if (currentEvent==null){
-            mEventTitle.setText("Nothing found");
+            mEventTitle.setText(R.string.prompt_no_event_found);
         }else{
             mEventTitle.setText(currentEvent.getProgrammeTitle());
-            mEventTime.setText(currentEvent.getDisplayDateTime());
+            try {
+                mEventTime.setText(mContext.getString(R.string.prefix_event_time_on_air, DateTimeUtils.getFormatedDateTime(currentEvent)));
+//                mEventTime.setText(mContext.getString(R.string.prefix_event_time_on_air, DateTimeUtils.convertDateToTime(currentEvent)));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
 

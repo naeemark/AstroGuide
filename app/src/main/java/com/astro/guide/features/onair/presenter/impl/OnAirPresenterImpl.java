@@ -77,7 +77,4 @@ public final class OnAirPresenterImpl extends BasePresenterImpl<OnAirView> imple
 
         mView.loadList(channelList);
     }
-
-
-
 }

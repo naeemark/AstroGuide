@@ -169,7 +169,7 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setCancelable(true);
+            mProgressDialog.setCancelable(false);
         }
         mProgressDialog.setMessage(message);
         mProgressDialog.show();
