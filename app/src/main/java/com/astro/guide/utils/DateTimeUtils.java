@@ -1,7 +1,5 @@
 package com.astro.guide.utils;
 
-import android.util.Log;
-
 import com.astro.guide.model.Event;
 
 import java.text.ParseException;
@@ -10,8 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
-import timber.log.Timber;
 
 /**
  * @author Naeem <naeemark@gmail.com>
@@ -24,28 +20,18 @@ public class DateTimeUtils {
     private static final String FORMAT_API_REQUEST_PARAM = "yyyy-MM-dd HH:mm";
     private static final String FORMAT_API_RESPONSE_DISPLAY_TIME = "yyyy-MM-dd HH:mm:ss.SSS";
     private static final String FORMAT_LIST_ITEM = "hh:mm a";
-
-    public static String getTime(String dateTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_API_RESPONSE_DISPLAY_TIME);
-        try {
-            Date d = sdf.parse(dateTime);
-            sdf.applyPattern(FORMAT_LIST_ITEM);
-            dateTime = sdf.format(d);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        } finally {
-            return dateTime;
-        }
-    }
+    private static final int HOURS_BEHIND = 3;
+    private static final int HOURS_AHEAD = 1;
 
     public static String[] getTimeRequestParams() {
         SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_API_REQUEST_PARAM);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
 
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.HOUR, -6);
+        now.add(Calendar.HOUR, -(HOURS_BEHIND));
         String startTime = sdf.format(now.getTime());
 
-        now.add(Calendar.HOUR, 10);
+        now.add(Calendar.HOUR, HOURS_BEHIND + HOURS_AHEAD);
         String endTime = sdf.format(now.getTime());
 
         return new String[]{startTime, endTime};
@@ -79,19 +65,15 @@ public class DateTimeUtils {
         SimpleDateFormat parser = new SimpleDateFormat("HH:mm:ss");
 
         TimeZone aDefault = TimeZone.getDefault();
-        Log.e("DIFFX", "D:" + aDefault.getDisplayName());
-
 
         TimeZone.setDefault(TimeZone.getTimeZone(DateTimeUtils.getServerTimeZoneId(event.getDisplayDateTimeUtc(), event.getDisplayDateTime(), sdfDate)));
         sdfDate.setTimeZone(TimeZone.getDefault());
         parser.setTimeZone(TimeZone.getDefault());
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
-        Log.e("DIFFX", "D:" + TimeZone.getDefault().getDisplayName());
 
 
         Date startDate = sdfDate.parse(event.getDisplayDateTime());
-
 
         calendar.setTime(startDate);
 
@@ -102,77 +84,20 @@ public class DateTimeUtils {
         calendar.add(Calendar.SECOND, showTime.getSeconds());
 
         Date endDate = calendar.getTime();
-
-
         TimeZone.setDefault(aDefault);
-        Log.e("DIFFX", "D:" + TimeZone.getDefault().getDisplayName());
         return date.after(startDate) && date.before(endDate);
     }
 
-
-    public static boolean isEventAliveO(Event event) throws ParseException {
-
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-
-        TimeZone aDefault = TimeZone.getDefault();
-
-        TimeZone.setDefault(TimeZone.getTimeZone(DateTimeUtils.getServerTimeZoneId(event.getDisplayDateTimeUtc(), event.getDisplayDateTime(), sdfDate)));
-        Calendar c = Calendar.getInstance();
-        Date date = Calendar.getInstance().getTime();
-
-//        TimeZone.setDefault(aDefault);
-
-
-        Date startDate = sdfDate.parse(event.getDisplayDateTime());
-
-        SimpleDateFormat parser = new SimpleDateFormat("HH:mm:ss");
-
-        c.setTime(startDate);
-
-        Date showTime = parser.parse(event.getDisplayDuration());
-
-        c.add(Calendar.HOUR_OF_DAY, showTime.getHours());
-        c.add(Calendar.MINUTE, showTime.getMinutes());
-        c.add(Calendar.SECOND, showTime.getSeconds());
-
-        Date endDate = c.getTime();
-
-
-        Log.e("DIFFX", "D:" + TimeZone.getDefault().getDisplayName());
-
-        return date.after(startDate) && date.before(endDate);
-    }
 
     public static String getFormatedDateTime(Event event) throws ParseException {
-        Timber.e("1" + TimeZone.getDefault().getDisplayName());
-
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 
         sdfDate.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date parse = sdfDate.parse(event.getDisplayDateTimeUtc());
+
         return sdf.format(parse);
     }
-
-    public static String convertDateToTime(Event event) throws ParseException {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-
-
-        sdfDate.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date parse = sdfDate.parse(event.getDisplayDateTimeUtc());
-
-
-        Calendar c = Calendar.getInstance(TimeZone.getDefault());
-
-
-        TimeZone tz = TimeZone.getTimeZone("GMT+5");
-
-        SimpleDateFormat destFormat = new SimpleDateFormat("hh:mm a");
-        destFormat.setTimeZone(tz);
-
-        return destFormat.format(parse);
-    }
-
 
     public static Event getCurrentEvent(List<Event> events) {
         for (Event event : events) {
