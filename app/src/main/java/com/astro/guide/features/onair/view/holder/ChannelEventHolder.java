@@ -56,47 +56,19 @@ public class ChannelEventHolder extends RecyclerView.ViewHolder {
     }
 
     public void setValues(final Channel channel) {
-        mChannel.setText(String.valueOf(channel.getStbNumber()) + "#"+channel.getTitle());
-
+        mChannel.setText(String.valueOf(channel.getStbNumber()) + ": " + channel.getTitle());
 
         Event currentEvent = DateTimeUtils.getCurrentEvent(channel.getEvents());
-
-        if (currentEvent==null){
+        if (currentEvent == null) {
             mEventTitle.setText(R.string.prompt_no_event_found);
-        }else{
+        } else {
             mEventTitle.setText(currentEvent.getProgrammeTitle());
             try {
                 mEventTime.setText(mContext.getString(R.string.prefix_event_time_on_air, DateTimeUtils.getFormatedDateTime(currentEvent)));
-//                mEventTime.setText(mContext.getString(R.string.prefix_event_time_on_air, DateTimeUtils.convertDateToTime(currentEvent)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-
-
-
-//        for (final Event event : channel.getEvents()) {
-//            LayoutInflater inflater = LayoutInflater.from(mContext);
-//            View inflatedLayout = inflater.inflate(R.layout.onnow_list_item_layout_inner, null, false);
-//
-//            TextView eventTitle = (TextView) inflatedLayout.findViewById(R.id.textview_eventTitle);
-//            TextView eventTime = (TextView) inflatedLayout.findViewById(R.id.textview_eventTime);
-//
-//            eventTitle.setText(event.getProgrammeTitle());
-//            eventTime.setText("Starts At:" + DateTimeUtils.getTime(event.getDisplayDateTime()));
-//
-//            inflatedLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(mContext, DetailActivity.class);
-//                    intent.putExtra(DetailActivity.EVENT, event);
-//                    mContext.startActivity(intent);
-//                }
-//            });
-//
-//            eventsLayout.addView(inflatedLayout);
-//
-//        }
 
         Glide.with(mContext)
                 .load(channel.getLogoUrl())
