@@ -74,7 +74,7 @@ public final class OnAirInteractorImpl extends BaseInteractorImpl implements OnA
         List<Integer> channelIds = new ArrayList<>(hashMap.keySet());
         Timber.i("SizeChannelIds: "+channelIds.size());
 
-        Observable<EventsResponse> observable = mApiService.getEventsList(DateTimeUtils.getTimeRequestParams()[0], DateTimeUtils.getTimeRequestParams()[1], channelIds.subList(0, 9).toString());
+        Observable<EventsResponse> observable = mApiService.getEventsList(DateTimeUtils.getTimeRequestParams()[0], DateTimeUtils.getTimeRequestParams()[1], channelIds.toString());
 
         subscribe(observable, new Observer<EventsResponse>() {
 
@@ -128,8 +128,6 @@ public final class OnAirInteractorImpl extends BaseInteractorImpl implements OnA
             channels = SortUtils.sortList(channels, AppConstants.SortOrder.SORT_BY_NUMBER);
             for (Channel channel : channels) {
                 map.put(channel.getId(), channel);
-                if (map.size() == 10)
-                    return map;
             }
         }
         return map;

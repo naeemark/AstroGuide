@@ -26,11 +26,13 @@
 
             <ImageView
                 android:id="@+id/logo_icon"
-                android:layout_width="100dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/width_channel_logo"
+                android:layout_height="@dimen/height_channel_logo"
                 android:layout_gravity="left"
+                android:background="@drawable/bg_row_left"
+                android:contentDescription="@string/lbl_logo"
+                android:padding="@dimen/margin_padding_minimal"
                 android:scaleType="fitCenter"/>
-
 
             <View
                 android:layout_width="@dimen/sep_line_width"
@@ -46,14 +48,12 @@
 
                 <TextView
                     android:id="@+id/textview_eventTitle"
-                    style="@style/TextTitle"
-                    android:text="sample programe here goes"/>
+                    style="@style/TextTitle"/>
 
                 <TextView
                     android:id="@+id/textview_eventTime"
                     style="@style/Text"
                     android:layout_below="@+id/textview_eventTitle"
-                    android:text="sample programe time here goes"
                     android:textStyle="italic"/>
 
             </RelativeLayout>
