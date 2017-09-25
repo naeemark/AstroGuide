@@ -19,9 +19,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
 public class CacheManager {
 
     private String mPathCacheDir;

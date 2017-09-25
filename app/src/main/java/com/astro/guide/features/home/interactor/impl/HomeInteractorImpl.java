@@ -34,16 +34,16 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     private final ChannelsApiService mApiService;
     private final PreferencesUtils mPreferencesUtils;
     private final ChannelParser mChannelParser;
-    private final AppCacheManager mCacheManager;
+    private final AppCacheManager mAppCacheManager;
     private final AppUser mAppUser;
 
     @Inject
-    public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager cacheManager, AppUser appUser) {
+    public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager appCacheManager, AppUser appUser) {
         mContext = context;
         mApiService = channelsApiService;
         mPreferencesUtils = preferencesUtils;
         mChannelParser = channelParser;
-        mCacheManager = cacheManager;
+        mAppCacheManager = appCacheManager;
         mAppUser = appUser;
     }
 
@@ -59,7 +59,7 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
 
     @Override
     public void fetchData(final OnFetchDataListener listener) {
-        String cachedData = mCacheManager.fetch(CacheTag.CHANNELS.name());
+        String cachedData = mAppCacheManager.fetch(CacheTag.CHANNELS.name());
         if (cachedData != null && !cachedData.isEmpty()) {
             ChannelsResponse response = new Gson().fromJson(cachedData, ChannelsResponse.class);
             listener.onDataResponse(mChannelParser.parseChannels(response));
@@ -71,14 +71,14 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
 
     @Override
     public void fetchFavouritesData(OnFetchDataListener listener) {
-        String cachedData = mCacheManager.fetch(CacheTag.CHANNELS.name());
+        String cachedData = mAppCacheManager.fetch(CacheTag.CHANNELS.name());
         if (cachedData != null && !cachedData.isEmpty()) {
             ChannelsResponse response = new Gson().fromJson(cachedData, ChannelsResponse.class);
             List<Channel> channels = mChannelParser.parseChannels(response);
             List<Channel> favouriteChannels = new ArrayList<>();
 
             for (Channel channel : channels) {
-                if (mAppUser.getFavouritesIds().contains(channel.getId())){
+                if (mAppUser.getFavouritesIds().contains(channel.getId())) {
                     favouriteChannels.add(channel);
                 }
             }
@@ -108,7 +108,7 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
 
             @Override
             public void onNext(ChannelsResponse response) {
-                mCacheManager.save(new Gson().toJson(response), CacheTag.CHANNELS.name());
+                mAppCacheManager.save(new Gson().toJson(response), CacheTag.CHANNELS.name());
                 List<Channel> channels = mChannelParser.parseChannels(response);
                 listener.onDataResponse(channels);
             }
@@ -116,15 +116,9 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     }
 
     @Override
-    public void cancelOnGoingHttpRequest() {
-        Timber.i("cancelOnGoingHttpRequest()");
-        unsubscribe();
-    }
-
-    @Override
     public void clearChannelsCache() {
-        boolean clear = mCacheManager.clear(CacheTag.CHANNELS.name());
-        Timber.e("clearChannelsCache: "+ clear);
+        boolean clear = mAppCacheManager.clear(CacheTag.CHANNELS.name());
+        Timber.e("clearChannelsCache: " + clear);
     }
 
     @Override
@@ -134,8 +128,8 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
 
     @Override
     public void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder, HomePresenter presenter) {
-        Timber.e("AppUser:"+ mAppUser.toString());
-        if(sortOrder.ordinal() == mAppUser.getSortOrder()){
+        Timber.e("AppUser:" + mAppUser.toString());
+        if (sortOrder.ordinal() == mAppUser.getSortOrder()) {
             return;
         }
         mAppUser.setSortOrder(sortOrder.ordinal());
@@ -146,13 +140,13 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     @Override
     public void updateCache() {
         Timber.e(mAppUser.toString());
-        mCacheManager.setAppUser(mAppUser);
+        mAppCacheManager.setAppUser(mAppUser);
     }
 
     @Override
     public void setHideFavouriteButton(boolean hidden) {
         mAppUser.setHideFavouriteButton(hidden);
-        mCacheManager.setAppUser(mAppUser);
+        mAppCacheManager.setAppUser(mAppUser);
     }
 
     @Override

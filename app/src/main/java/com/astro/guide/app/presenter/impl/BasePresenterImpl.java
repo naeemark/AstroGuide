@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.astro.guide.app.presenter.BasePresenter;
+import com.astro.guide.app.view.BaseView;
+
+import timber.log.Timber;
 
 /**
  * Abstract presenter implementation that contains base implementation for other presenters.
@@ -41,5 +44,26 @@ public abstract class BasePresenterImpl<V> implements BasePresenter<V> {
     @Override
     public void onPresenterDestroyed() {
 
+    }
+
+    @Override
+    public void onStart() {
+        assert mView != null;
+        ((BaseView)mView).showLoading();
+    }
+
+    @Override
+    public void onFailure(String message) {
+        Timber.d(message);
+        assert mView != null;
+        BaseView view = (BaseView) mView;
+        view.hideLoading();
+        view.showErrorLoading();
+    }
+
+    @Override
+    public void onComplete() {
+        assert mView != null;
+        ((BaseView)mView).hideLoading();
     }
 }

@@ -21,7 +21,7 @@
             android:id="@+id/imageView_logo"
             android:layout_width="@dimen/width_channel_logo"
             android:layout_height="@dimen/height_channel_logo"
-            android:background="@drawable/bg_channel_logo"
+            android:background="@drawable/bg_row_left"
             android:padding="@dimen/margin_padding_minimal"
             android:scaleType="fitCenter" />
 

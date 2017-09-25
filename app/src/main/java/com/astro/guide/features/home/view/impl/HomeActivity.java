@@ -29,6 +29,7 @@ import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.view.HomeView;
 import com.astro.guide.features.home.view.adapter.ChannelsListAdapter;
+import com.astro.guide.features.onair.view.impl.OnAirActivity;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 
@@ -233,11 +234,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     }
 
     @Override
-    public void showErrorLoading() {
-        super.showToast(getString(R.string.error_loading_data));
-    }
-
-    @Override
     public void loadList(List<Channel> channelList) {
         Timber.e("channelListSize: " + channelList.size());
         mChannelList = (ArrayList<Channel>) channelList;
@@ -280,6 +276,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     public void launchFavouritesListActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra(EXTRA_IS_FOR_FAVOURITE, true);
+        startActivity(intent);
+    }
+
+    @Override
+    public void launchOnAirActivity() {
+        Intent intent = new Intent(this, OnAirActivity.class);
         startActivity(intent);
     }
 

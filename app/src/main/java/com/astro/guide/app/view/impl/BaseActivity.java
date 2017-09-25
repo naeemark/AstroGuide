@@ -188,6 +188,11 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
     }
 
     @Override
+    public void showErrorLoading() {
+        showToast(getString(R.string.error_loading_data));
+    }
+
+    @Override
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }

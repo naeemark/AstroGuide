@@ -80,13 +80,16 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
 //        if (mUserSettings.getUserEmail() == null) {
 //            mFavButton.setOnClickListener(this);
 //        } else {
-        mFavButton.setOnFavoriteChangeListener(this);
+//        mFavButton.setOnFavoriteChangeListener(this);
 //        }
     }
 
     private void showFavButton() {
+        // To avoid inconsistency, set null as FavoriteChangeListener
+        mFavButton.setOnFavoriteChangeListener(null);
         mFavButton.setFavorite(mAppUser.getFavouritesIds().contains(mChannel.getId()), false);
         mFavButton.setVisibility(View.VISIBLE);
+        mFavButton.setOnFavoriteChangeListener(this);
     }
 
     @Override
