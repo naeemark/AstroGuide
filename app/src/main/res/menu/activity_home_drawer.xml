@@ -16,10 +16,11 @@
         <menu>
             <item
                 android:id="@+id/nav_login"
-                android:icon="@drawable/ic_menu_settings"
-                android:title="Login"/>
+                android:icon="@drawable/ic_menu_account"
+                android:title="Profile"/>
             <item
                 android:id="@+id/nav_logout"
+                android:visible="false"
                 android:icon="@drawable/ic_menu_settings"
                 android:title="Logout"/>
         </menu>

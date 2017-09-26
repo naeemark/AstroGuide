@@ -60,7 +60,7 @@ dependencies {
     final BUTTERKNIFE_VERSION = '8.6.0'
     final FAV_BTN_VERSION = '0.1.4'
     final GLIDE_VERSION = '3.7.0'
-    final PS_AUTH_VERSION = '11.0.2'
+    final PS_AUTH_VERSION = '10.2.6'
     final JUNIT_VERSION = '4.12'
     final DAGGER_VERSION = '2.9'
     final MOCKITO_VERSION = '2.7.0'

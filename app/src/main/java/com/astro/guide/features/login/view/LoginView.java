@@ -11,4 +11,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public interface LoginView extends BaseView, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
     void updateUi(AppUser appUser);
+
+    void logout();
 }

@@ -248,6 +248,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @Override
     public void setDrawerHeaderData(AppUser appUser) {
+        Timber.i("setDrawerHeaderData()");
         if(appUser!=null) {
             mUserNameTextView.setText(appUser.getName());
             mUserEmailTextView.setText(appUser.getEmail());

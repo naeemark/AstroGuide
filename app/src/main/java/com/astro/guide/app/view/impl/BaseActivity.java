@@ -98,7 +98,6 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
 
             mPresenter.onViewDetached();
         }
-
         super.onStop();
     }
 
