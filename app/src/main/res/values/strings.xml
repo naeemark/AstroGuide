@@ -24,5 +24,7 @@
     <string name="lbl_no_list_items">No Items Found</string>
     <string name="prefix_event_time_on_air">Starts At: %s</string>
     <string name="prompt_no_event_found">No event available!</string>
+    <string name="sign_out">Logout</string>
+    <string name="error_connection_failed">Connection attempt Failed</string>
 
 </resources>

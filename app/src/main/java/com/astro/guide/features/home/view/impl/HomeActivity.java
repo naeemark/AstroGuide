@@ -29,6 +29,7 @@ import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.view.HomeView;
 import com.astro.guide.features.home.view.adapter.ChannelsListAdapter;
+import com.astro.guide.features.login.view.impl.LoginActivity;
 import com.astro.guide.features.onair.view.impl.OnAirActivity;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
@@ -283,6 +284,17 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     public void launchOnAirActivity() {
         Intent intent = new Intent(this, OnAirActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void launchLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void logout() {
+        Timber.e("updateUi()");
     }
 
     @Override

@@ -22,6 +22,8 @@ public class AppUser {
 
     private boolean hideFavouriteButton;
 
+    private boolean isLoggedIn;
+
     private Set<Integer> favouritesIds = new HashSet<>();
 
     @Inject
@@ -59,6 +61,14 @@ public class AppUser {
         return hideFavouriteButton;
     }
 
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
+
     public void setHideFavouriteButton(boolean hideFavouriteButton) {
         this.hideFavouriteButton = hideFavouriteButton;
     }
@@ -76,6 +86,7 @@ public class AppUser {
         return "AppUser{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", isLoggedIn='" + isLoggedIn + '\'' +
                 ", sortOrder=" + sortOrder +
                 ", hideFavouriteButton=" + hideFavouriteButton +
                 ", favouritesIds=" + favouritesIds +
