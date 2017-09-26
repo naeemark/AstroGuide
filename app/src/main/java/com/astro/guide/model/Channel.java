@@ -1,6 +1,8 @@
 package com.astro.guide.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Naeem <naeemark@gmail.com>
@@ -17,6 +19,9 @@ public class Channel implements Serializable {
     private String logoUrl;
     private boolean isFavourite;
 
+    private List<Event> events = new ArrayList<>();
+
+
     public Channel(int id, String title, String stbNumber, String description) {
         this.id = id;
         this.title = title;
@@ -31,6 +36,16 @@ public class Channel implements Serializable {
         this.description = description;
         this.logoUrl = logoUrl;
         this.isFavourite = isFavourite;
+    }
+
+    public Channel(int id, String title, String stbNumber, String description, String logoUrl, boolean isFavourite, List<Event> events) {
+        this.id = id;
+        this.title = title;
+        this.stbNumber = stbNumber;
+        this.description = description;
+        this.logoUrl = logoUrl;
+        this.isFavourite = isFavourite;
+        this.events = events;
     }
 
     public int getId() {
@@ -81,6 +96,14 @@ public class Channel implements Serializable {
         isFavourite = favourite;
     }
 
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
     @Override
     public String toString() {
         return "Channel{" +
@@ -90,6 +113,7 @@ public class Channel implements Serializable {
                 ", description='" + description + '\'' +
                 ", logoUrl='" + logoUrl + '\'' +
                 ", isFavourite=" + isFavourite +
+                ", events=" + events +
                 '}';
     }
 }

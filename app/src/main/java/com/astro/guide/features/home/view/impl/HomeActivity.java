@@ -29,8 +29,11 @@ import com.astro.guide.features.home.injection.HomeViewModule;
 import com.astro.guide.features.home.presenter.HomePresenter;
 import com.astro.guide.features.home.view.HomeView;
 import com.astro.guide.features.home.view.adapter.ChannelsListAdapter;
+import com.astro.guide.features.login.view.impl.LoginActivity;
+import com.astro.guide.features.onair.view.impl.OnAirActivity;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
+import com.astro.guide.utils.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,7 +191,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -233,11 +236,6 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     }
 
     @Override
-    public void showErrorLoading() {
-        super.showToast(getString(R.string.error_loading_data));
-    }
-
-    @Override
     public void loadList(List<Channel> channelList) {
         Timber.e("channelListSize: " + channelList.size());
         mChannelList = (ArrayList<Channel>) channelList;
@@ -251,6 +249,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @Override
     public void setDrawerHeaderData(AppUser appUser) {
+        Timber.i("setDrawerHeaderData()");
         if(appUser!=null) {
             mUserNameTextView.setText(appUser.getName());
             mUserEmailTextView.setText(appUser.getEmail());
@@ -281,6 +280,28 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra(EXTRA_IS_FOR_FAVOURITE, true);
         startActivity(intent);
+    }
+
+    @Override
+    public void launchOnAirActivity() {
+        Intent intent = new Intent(this, OnAirActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void launchLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void logout() {
+        Timber.e("updateUi()");
+    }
+
+    @Override
+    public void showLoginAlertDialog() {
+        DialogUtils.showLoginAlertDialog(this);
     }
 
     @Override

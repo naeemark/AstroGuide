@@ -36,4 +36,10 @@ public interface BasePresenter<V> {
      * any resource used by the presenter (cancel HTTP requests, close database connection...).
      */
     void onPresenterDestroyed();
+
+    void onStart();
+
+    void onFailure(String message);
+
+    void onComplete();
 }

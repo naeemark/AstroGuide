@@ -11,6 +11,7 @@ import com.astro.guide.R;
 import com.astro.guide.features.home.view.HomeView;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
+import com.astro.guide.utils.DialogUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -77,23 +78,27 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
                     }
                 });
 
-//        if (mUserSettings.getUserEmail() == null) {
-//            mFavButton.setOnClickListener(this);
-//        } else {
-        mFavButton.setOnFavoriteChangeListener(this);
-//        }
+        if (mAppUser.isLoggedIn()) {
+            mFavButton.setOnFavoriteChangeListener(this);
+        } else {
+            mFavButton.setOnClickListener(this);
+        }
     }
 
     private void showFavButton() {
+        // To avoid inconsistency, set null as FavoriteChangeListener
+        mFavButton.setOnFavoriteChangeListener(null);
         mFavButton.setFavorite(mAppUser.getFavouritesIds().contains(mChannel.getId()), false);
         mFavButton.setVisibility(View.VISIBLE);
+        mFavButton.setOnFavoriteChangeListener(this);
     }
 
     @Override
     public void onClick(View v) {
-//        if (v.getId() == R.id.button_fav) {
-//            showLoginAlert();
-//        } else {
+        if (v.getId() == R.id.button_fav) {
+            DialogUtils.showLoginAlertDialog(mContext);
+        }
+// else {
 //            Intent intent = new Intent(mContext, DetailActivity.class);
 //            intent.putExtra(DetailActivity.CHANNEL, mChannel);
 //
@@ -105,30 +110,6 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
 //            }
 //        }
     }
-
-//    private void showLoginAlert() {
-//        AlertDialog dialog = new AlertDialog.Builder(mContext)
-//                .setMessage("Please Login before the action!")
-//                .setCancelable(true)
-//                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent(mContext, SsoActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                        mContext.startActivity(intent);
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .create();
-//        dialog.show();
-//
-//    }
 
     @Override
     public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {

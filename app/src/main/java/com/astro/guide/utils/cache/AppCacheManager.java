@@ -10,10 +10,7 @@ import com.google.gson.Gson;
 import java.util.Calendar;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-
-@Singleton
 public class AppCacheManager {
 
     private static final String TAG = AppCacheManager.class.getSimpleName();
@@ -26,8 +23,9 @@ public class AppCacheManager {
     public CacheManager mCacheManager;
 
     @Inject
-    public AppCacheManager() {
+    public AppCacheManager(PreferencesUtils preferencesUtils) {
 
+        mPreferencesUtils = preferencesUtils;
     }
 
     public void saveForTimed(String data, String fileName) {
@@ -82,7 +80,11 @@ public class AppCacheManager {
         if (settings == null || settings.length() == 0) {
             return null;
         }
-        return new Gson().fromJson(settings, AppUser.class);
+        return getAppUser(settings);
+    }
+
+    public AppUser getAppUser(String appUserJson) {
+        return new Gson().fromJson(appUserJson, AppUser.class);
     }
 
     public void setAppUser(AppUser appUser) {

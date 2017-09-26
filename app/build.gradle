@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-final CACHE_MINUTES = "300"
+final CACHE_MINUTES = "60"
 
 android {
     compileSdkVersion 26
@@ -14,6 +14,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "int", "CACHE_MINUTES", CACHE_MINUTES
+        buildConfigField "String", "BASE_URL", "\"http://ams-api.astro.com.my\""
+        buildConfigField "String", "BASE_URL_AWS", "\"http://104.199.224.26:8000\""
     }
     signingConfigs {
         release {
@@ -42,6 +44,17 @@ android {
     }
 }
 
+def renameBuildFile() {
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def file = output.outputFile
+            def newName = rootProject.name + "-v"+ versionName +"-"+ new Date().format('ddMMyy') + ".apk"
+            output.outputFile = new File(file.parent, newName)
+        }
+    }
+}
+
+
 dependencies {
 
     final SUPPORT_LIBRARY_VERSION = '26.0.0-alpha1'
@@ -49,6 +62,7 @@ dependencies {
     final BUTTERKNIFE_VERSION = '8.6.0'
     final FAV_BTN_VERSION = '0.1.4'
     final GLIDE_VERSION = '3.7.0'
+    final PS_AUTH_VERSION = '10.2.6'
     final JUNIT_VERSION = '4.12'
     final DAGGER_VERSION = '2.9'
     final MOCKITO_VERSION = '2.7.0'
@@ -78,10 +92,12 @@ dependencies {
 
     compile "com.github.bumptech.glide:glide:$GLIDE_VERSION"
 
-    testCompile "junit:junit:$JUNIT_VERSION"
-
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+
+    compile "com.google.android.gms:play-services-auth:$PS_AUTH_VERSION"
+
+    testCompile "junit:junit:$JUNIT_VERSION"
 
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
 
@@ -102,15 +118,4 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-}
-
-
-def renameBuildFile() {
-    android.applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def file = output.outputFile
-            def newName = rootProject.name + "-v"+ versionName +"-"+ new Date().format('ddMMyy') + ".apk"
-            output.outputFile = new File(file.parent, newName)
-        }
-    }
 }

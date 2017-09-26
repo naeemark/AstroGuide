@@ -35,4 +35,10 @@ public class BaseInteractorImpl implements BaseInteractor {
             mSubscription.unsubscribe();
         }
     }
+
+    @Override
+    public void cancelOnGoingHttpRequest() {
+        Timber.i("cancelOnGoingHttpRequest()");
+        unsubscribe();
+    }
 }

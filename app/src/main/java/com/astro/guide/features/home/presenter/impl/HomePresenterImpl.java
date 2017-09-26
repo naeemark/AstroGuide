@@ -81,8 +81,11 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     @Override
     public void onFabClicked() {
         assert mView != null;
-        mView.showToast("onFabClicked()");
-        mView.launchFavouritesListActivity();
+        if (mInteractor.getAppUser().isLoggedIn()) {
+            mView.launchFavouritesListActivity();
+        }else{
+            mView.showLoginAlertDialog();
+        }
     }
 
     @Override
@@ -90,13 +93,13 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
 
         assert mView != null;
         if (itemId == R.id.nav_channels) {
-            mView.showToast("R.id.nav_channels");
-        } else if (itemId == R.id.nav_epg) {
-            mView.showToast("R.id.nav_epg");
+            Timber.e("R.id.nav_channels");
+        } else if (itemId == R.id.nav_on_air) {
+            mView.launchOnAirActivity();
         } else if (itemId == R.id.nav_login) {
-
+            mView.launchLoginActivity();
         } else if (itemId == R.id.nav_logout) {
-
+            mView.logout();
         } else if (itemId == R.id.nav_info) {
             mView.showInfo();
         }
@@ -104,7 +107,7 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
 
     @Override
     public void onRefreshClicked() {
-        mInteractor.clearChannelsCache();
+        mInteractor.clearCache();
         fetchData();
     }
 
@@ -116,12 +119,6 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     @Override
     public void updateCache() {
         mInteractor.updateCache();
-    }
-
-    @Override
-    public void onStart() {
-        assert mView != null;
-        mView.showLoading();
     }
 
     @Override
@@ -141,21 +138,6 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
         if (channelList.isEmpty()){
             mView.showPrompt(mInteractor.getEmptyListPromptText());
         }
-
         mView.loadList(channelList);
-    }
-
-    @Override
-    public void onFailure(String message) {
-        Timber.d(message);
-        assert mView != null;
-        mView.hideLoading();
-        mView.showErrorLoading();
-    }
-
-    @Override
-    public void onComplete() {
-        assert mView != null;
-        mView.hideLoading();
     }
 }

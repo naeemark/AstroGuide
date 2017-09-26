@@ -11,8 +11,6 @@ import java.util.List;
 @UiThread
 public interface HomeView extends BaseView {
 
-    void showErrorLoading();
-
     void loadList(List<Channel> channelList);
 
     void showInfo();
@@ -28,4 +26,12 @@ public interface HomeView extends BaseView {
     boolean isForFavourites();
 
     void showPrompt(String promptText);
+
+    void launchOnAirActivity();
+
+    void launchLoginActivity();
+
+    void logout();
+
+    void showLoginAlertDialog();
 }

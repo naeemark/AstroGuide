@@ -6,4 +6,5 @@
     <color name="colorBackground">#EEEEEE</color>
     <color name="colorText">@android:color/black</color>
     <color name="colorAccentDim">#44FF4081</color>
+    <color name="colorSepLine">#66FF4081</color>
 </resources>
