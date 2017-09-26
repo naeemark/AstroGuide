@@ -11,7 +11,7 @@ import com.astro.guide.app.injection.NetworkApiModule;
 
 import timber.log.Timber;
 
-import static com.astro.guide.constants.ServerConstant.BASE_URL;
+import static com.astro.guide.BuildConfig.BASE_URL;
 
 public final class AstroGuideApp extends Application {
     private AppComponent mAppComponent;

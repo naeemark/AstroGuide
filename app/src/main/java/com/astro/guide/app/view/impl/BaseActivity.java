@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,6 +21,7 @@ import com.astro.guide.app.presenter.BasePresenter;
 import com.astro.guide.app.presenter.loader.PresenterFactory;
 import com.astro.guide.app.presenter.loader.PresenterLoader;
 import com.astro.guide.app.view.BaseView;
+import com.astro.guide.utils.DialogUtils;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -98,7 +98,6 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
 
             mPresenter.onViewDetached();
         }
-
         super.onStop();
     }
 
@@ -203,31 +202,10 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
     }
 
     protected void showAbout() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Developed for Astro Recruitment on 09/25/2017!")
-                .setCancelable(true)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        dialog.show();
+        DialogUtils.showAboutDialog(this);
     }
 
-    protected void showLogoutDialog(String message, DialogInterface.OnClickListener positiveListener) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage(message)
-                .setCancelable(true)
-                .setPositiveButton(android.R.string.yes, positiveListener)
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        dialog.show();
+    protected void showLogoutDialog(String prompt, DialogInterface.OnClickListener positiveListener) {
+        DialogUtils.showLogoutPromptDialog(this, prompt, positiveListener);
     }
 }

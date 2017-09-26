@@ -80,7 +80,11 @@ public class AppCacheManager {
         if (settings == null || settings.length() == 0) {
             return null;
         }
-        return new Gson().fromJson(settings, AppUser.class);
+        return getAppUser(settings);
+    }
+
+    public AppUser getAppUser(String appUserJson) {
+        return new Gson().fromJson(appUserJson, AppUser.class);
     }
 
     public void setAppUser(AppUser appUser) {

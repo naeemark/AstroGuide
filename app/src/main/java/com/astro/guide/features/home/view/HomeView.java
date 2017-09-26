@@ -28,4 +28,10 @@ public interface HomeView extends BaseView {
     void showPrompt(String promptText);
 
     void launchOnAirActivity();
+
+    void launchLoginActivity();
+
+    void logout();
+
+    void showLoginAlertDialog();
 }
