@@ -12,4 +12,5 @@ public interface OnAirPresenter extends BasePresenter<OnAirView>, BaseInteractor
 
     void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder);
 
+    void onRefreshClicked();
 }

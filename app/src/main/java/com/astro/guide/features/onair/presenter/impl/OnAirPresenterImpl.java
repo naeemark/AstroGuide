@@ -34,13 +34,11 @@ public final class OnAirPresenterImpl extends BasePresenterImpl<OnAirView> imple
     public void onStart(boolean viewCreated) {
         super.onStart(viewCreated);
 
-        Timber.e("onStart:" + mInteractor.getAppUser().toString());
         if (viewCreated) {
-            // nothing to do with firstStart
+            assert mView != null;
+            mView.setSortButtonChecked(mInteractor.getAppUser().getSortOrder());
+            fetchData();
         }
-        assert mView != null;
-        mView.setSortButtonChecked(mInteractor.getAppUser().getSortOrder());
-        fetchData();
     }
 
     @Override
@@ -59,19 +57,26 @@ public final class OnAirPresenterImpl extends BasePresenterImpl<OnAirView> imple
     }
 
     @Override
+    public void onRefreshClicked() {
+        mInteractor.clearCache();
+        fetchData();
+    }
+
+    @Override
     public void onDataResponse(List<Channel> channelList) {
         Timber.i(String.valueOf(channelList.size()));
         mInteractor.sortChannelsList(channelList, this);
     }
 
     @Override
-    public void onFetchedFavouritesData(List<Channel> channelList) {}
+    public void onFetchedFavouritesData(List<Channel> channelList) {
+    }
 
 
     @Override
     public void onListSorted(List<Channel> channelList) {
         assert mView != null;
-        if (channelList.isEmpty()){
+        if (channelList.isEmpty()) {
             mView.showPrompt(mInteractor.getEmptyListPromptText());
         }
 

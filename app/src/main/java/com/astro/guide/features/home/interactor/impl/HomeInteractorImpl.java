@@ -116,9 +116,9 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     }
 
     @Override
-    public void clearChannelsCache() {
+    public void clearCache() {
         boolean clear = mAppCacheManager.clear(CacheTag.CHANNELS.name());
-        Timber.e("clearChannelsCache: " + clear);
+        Timber.e("clearCache: " + clear);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class DateTimeUtils {
     private static final String FORMAT_API_REQUEST_PARAM = "yyyy-MM-dd HH:mm";
     private static final String FORMAT_API_RESPONSE_DISPLAY_TIME = "yyyy-MM-dd HH:mm:ss.SSS";
     private static final String FORMAT_LIST_ITEM = "hh:mm a";
-    private static final int HOURS_BEHIND = 4;
+    private static final int HOURS_BEHIND = 2;
     private static final int HOURS_AHEAD = 1;
 
     public static String[] getTimeRequestParams() {

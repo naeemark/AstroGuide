@@ -56,15 +56,16 @@ public final class OnAirInteractorImpl extends BaseInteractorImpl implements OnA
 
     @Override
     public void fetchData(OnFetchDataListener listener) {
-//        String cachedData = mAppCacheManager.fetch(CacheTag.EVENTS.name());
-//        if (cachedData != null && !cachedData.isEmpty()) {
-//            ChannelsResponse response = new Gson().fromJson(cachedData, ChannelsResponse.class);
-//            listener.onDataResponse(mChannelParser.parseChannels(response));
-//            listener.onComplete();
-//        } else {
-//            fetchDataFromApi(listener);
-//        }
+        String cachedData = mAppCacheManager.fetchTimed(CacheTag.EVENTS.name());
+        if (cachedData != null && !cachedData.isEmpty()) {
+            EventsResponse response = new Gson().fromJson(cachedData, EventsResponse.class);
+            Map<Integer, Channel> channelsMap = getChannelsMap();
+            mChannelParser.mapEventsToChannels(response, channelsMap);
+            listener.onDataResponse(new ArrayList<Channel>(channelsMap.values()));
+            listener.onComplete();
+        } else {
             fetchDataFromApi(listener);
+        }
     }
 
     private void fetchDataFromApi(final OnFetchDataListener listener) {
@@ -91,7 +92,7 @@ public final class OnAirInteractorImpl extends BaseInteractorImpl implements OnA
 
             @Override
             public void onNext(EventsResponse response) {
-//                mAppCacheManager.save(new Gson().toJson(response), CacheTag.EVENTS.name());
+                mAppCacheManager.saveForTimed(new Gson().toJson(response), CacheTag.EVENTS.name());
                 mChannelParser.mapEventsToChannels(response, hashMap);
                 listener.onDataResponse(new ArrayList<Channel>(hashMap.values()));
             }
@@ -136,5 +137,11 @@ public final class OnAirInteractorImpl extends BaseInteractorImpl implements OnA
     @Override
     public String getEmptyListPromptText() {
         return mContext.getString(R.string.lbl_no_list_items);
+    }
+
+    @Override
+    public void clearCache() {
+        boolean clear = mAppCacheManager.clear(CacheTag.EVENTS.name());
+        Timber.e("clearCache: " + clear);
     }
 }

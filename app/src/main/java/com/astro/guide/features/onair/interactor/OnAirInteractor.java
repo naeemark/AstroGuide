@@ -20,4 +20,6 @@ public interface OnAirInteractor extends BaseInteractor {
     void sortChannelsList(ArrayList<Channel> channelList, AppConstants.SortOrder sortOrder, OnAirPresenter presenter);
 
     String getEmptyListPromptText();
+
+    void clearCache();
 }

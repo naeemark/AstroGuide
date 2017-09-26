@@ -103,7 +103,7 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
 
     @Override
     public void onRefreshClicked() {
-        mInteractor.clearChannelsCache();
+        mInteractor.clearCache();
         fetchData();
     }
 

@@ -19,7 +19,7 @@ public interface HomeInteractor extends BaseInteractor {
 
     void fetchFavouritesData(OnFetchDataListener listener);
 
-    void clearChannelsCache();
+    void clearCache();
 
     void sortChannelsList(List<Channel> channelList, HomePresenter presenter);
 

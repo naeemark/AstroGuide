@@ -189,7 +189,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
