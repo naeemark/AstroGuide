@@ -16,6 +16,8 @@ public interface BaseView {
 
     void showErrorWithMessage(String errorText);
 
+    void showErrorLoading();
+
     void showToast(String message);
 
     void showNetworkError();

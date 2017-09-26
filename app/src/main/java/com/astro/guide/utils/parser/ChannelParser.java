@@ -1,11 +1,15 @@
 package com.astro.guide.utils.parser;
 
 import com.astro.guide.model.Channel;
+import com.astro.guide.model.Event;
 import com.astro.guide.model.response.channel.ChannelsResponse;
 import com.astro.guide.model.response.channel.ChannelsResponseChannel;
+import com.astro.guide.model.response.event.EventsResponse;
+import com.astro.guide.model.response.event.EventsResponseGetevent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -37,5 +41,28 @@ public class ChannelParser {
             }
         }
         return channelList;
+    }
+
+    public void mapEventsToChannels(EventsResponse eventsResponse, Map<Integer, Channel> channelMap) {
+        if (eventsResponse != null) {
+            EventsResponseGetevent[] events = eventsResponse.getGetevent();
+            if (events != null) {
+                for (EventsResponseGetevent e : events) {
+                    Event event = new Event(
+                            e.getEventID(),
+                            e.getDisplayDateTimeUtc(),
+                            e.getDisplayDateTime(),
+                            e.getDisplayDuration(),
+                            e.getContentId(),
+                            e.getShortSynopsis(),
+                            e.getActors(),
+                            e.getEpgEventImage(),
+                            e.getProgrammeTitle()
+                    );
+                    channelMap.get(e.getChannelId()).getEvents().add(event);
+                }
+            }
+        }
+
     }
 }

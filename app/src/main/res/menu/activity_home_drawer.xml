@@ -5,11 +5,11 @@
         <item
             android:id="@+id/nav_channels"
             android:icon="@drawable/ic_menu_channels"
-            android:title="Channels"/>
+            android:title="@string/title_activity_home"/>
         <item
-            android:id="@+id/nav_epg"
+            android:id="@+id/nav_on_air"
             android:icon="@drawable/ic_menu_epg"
-            android:title="TV Guide"/>
+            android:title="@string/title_activity_onair"/>
     </group>
 
     <item android:title="Account" android:visible="false">

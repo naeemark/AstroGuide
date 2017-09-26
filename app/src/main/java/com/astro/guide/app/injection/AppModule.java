@@ -7,6 +7,7 @@ import com.astro.guide.R;
 import com.astro.guide.app.AstroGuideApp;
 import com.astro.guide.constants.AppConstants;
 import com.astro.guide.model.AppUser;
+import com.astro.guide.utils.PreferencesUtils;
 import com.astro.guide.utils.cache.AppCacheManager;
 
 import javax.inject.Singleton;
@@ -31,6 +32,12 @@ public final class AppModule {
     @Provides
     public AstroGuideApp provideApp() {
         return mApp;
+    }
+
+    @Singleton
+    @Provides
+    public AppCacheManager providesCacheManager(PreferencesUtils preferencesUtils){
+        return new AppCacheManager(preferencesUtils);
     }
 
     @Singleton
