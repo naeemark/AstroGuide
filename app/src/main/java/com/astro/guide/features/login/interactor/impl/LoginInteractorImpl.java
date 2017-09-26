@@ -50,6 +50,7 @@ public final class LoginInteractorImpl extends BaseInteractorImpl implements Log
 
         mAppUser.setName(acct.getDisplayName());
         mAppUser.setEmail(acct.getEmail());
+        mAppUser.setPhotoUrl(acct.getPhotoUrl());
         mAppUser.setLoggedIn(true);
 
         listener.onStart();
@@ -102,6 +103,7 @@ public final class LoginInteractorImpl extends BaseInteractorImpl implements Log
 
     private void clearAppUser() {
         mAppUser.updateData(mContext.getString(R.string.guest_user_name), mContext.getString(R.string.guest_user_email), AppConstants.SortOrder.SORT_BY_NAME.ordinal());
+        mAppUser.setPhotoUrl(null);
         mAppUser.setLoggedIn(false);
         mAppUser.getFavouritesIds().clear();
         updateCache();

@@ -1,5 +1,7 @@
 package com.astro.guide.model;
 
+import android.net.Uri;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +27,8 @@ public class AppUser {
     private boolean isLoggedIn;
 
     private Set<Integer> favouritesIds = new HashSet<>();
+
+    private Uri photoUrl;
 
     @Inject
     public AppUser(String name, String email, int sortOrder) {
@@ -81,6 +85,14 @@ public class AppUser {
         this.favouritesIds = favouritesIds;
     }
 
+    public Uri getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(Uri photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
     public void updateData(String name, String email, int sortOrder) {
         this.name = name;
         this.email = email;
@@ -92,6 +104,7 @@ public class AppUser {
         return "AppUser{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
                 ", isLoggedIn='" + isLoggedIn + '\'' +
                 ", sortOrder=" + sortOrder +
                 ", hideFavouriteButton=" + hideFavouriteButton +

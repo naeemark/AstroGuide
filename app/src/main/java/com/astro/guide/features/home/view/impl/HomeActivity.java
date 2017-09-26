@@ -34,6 +34,7 @@ import com.astro.guide.features.onair.view.impl.OnAirActivity;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 import com.astro.guide.utils.DialogUtils;
+import com.astro.guide.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,9 +114,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
         boolean isForFavorites = intent.getBooleanExtra(EXTRA_IS_FOR_FAVOURITE, false);
 
-        if(isForFavorites){
+        if (isForFavorites) {
             initElementsForFavourites();
-        }else {
+        } else {
             initElements();
         }
 
@@ -197,6 +198,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
 
     /**
      * Sets visibility for refresh on the base of Activity content type
+     *
      * @param menu
      * @return
      */
@@ -250,10 +252,9 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     @Override
     public void setDrawerHeaderData(AppUser appUser) {
         Timber.i("setDrawerHeaderData()");
-        if(appUser!=null) {
-            mUserNameTextView.setText(appUser.getName());
-            mUserEmailTextView.setText(appUser.getEmail());
-        }
+        mUserNameTextView.setText(appUser.getName());
+        mUserEmailTextView.setText(appUser.getEmail());
+        ImageUtils.loadImage(this, mUserDpImageView, appUser.getPhotoUrl());
     }
 
     private void showList() {
