@@ -32,4 +32,6 @@ public interface HomeView extends BaseView {
     void launchLoginActivity();
 
     void logout();
+
+    void showLoginAlertDialog();
 }

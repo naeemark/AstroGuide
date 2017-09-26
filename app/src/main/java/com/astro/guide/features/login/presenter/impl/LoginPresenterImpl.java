@@ -59,6 +59,13 @@ public final class LoginPresenterImpl extends BasePresenterImpl<LoginView> imple
     }
 
     @Override
+    public void onFailure(String message) {
+        Timber.d(message);
+        assert mView != null;
+        mView.showErrorWithMessage(message);
+    }
+
+    @Override
     public void onFetchSettings(AppUser appUser) {
         assert mView != null;
         mView.updateUi(appUser);

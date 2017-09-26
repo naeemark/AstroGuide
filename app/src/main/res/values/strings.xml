@@ -30,5 +30,7 @@
     <string name="prompt_please_login">Please Login before the action!</string>
     <string name="lbl_login">Login</string>
     <string name="lbl_cancel">Cancel</string>
+    <string name="error_no_user_data_found">No Settings downloaded!</string>
+    <string name="lbl_about">Developed for Astro Recruitment on 09/25/2017!</string>
 
 </resources>

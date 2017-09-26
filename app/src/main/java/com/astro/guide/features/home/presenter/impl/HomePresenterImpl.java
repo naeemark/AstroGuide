@@ -81,7 +81,11 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
     @Override
     public void onFabClicked() {
         assert mView != null;
-        mView.launchFavouritesListActivity();
+        if (mInteractor.getAppUser().isLoggedIn()) {
+            mView.launchFavouritesListActivity();
+        }else{
+            mView.showLoginAlertDialog();
+        }
     }
 
     @Override

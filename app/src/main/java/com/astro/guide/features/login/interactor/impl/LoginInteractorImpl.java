@@ -48,9 +48,13 @@ public final class LoginInteractorImpl extends BaseInteractorImpl implements Log
     @Override
     public void fetchAppUserSettings(GoogleSignInAccount acct, final OnSyncSettingsListener listener) {
 
+        mAppUser.setName(acct.getDisplayName());
+        mAppUser.setEmail(acct.getEmail());
+        mAppUser.setLoggedIn(true);
+
         listener.onStart();
 
-        Observable<AppUser> observable = mApiService.get(acct.getEmail());
+        Observable<AppUser> observable = mApiService.get(mAppUser.getEmail());
 
         subscribe(observable, new Observer<AppUser>() {
             @Override
@@ -60,19 +64,19 @@ public final class LoginInteractorImpl extends BaseInteractorImpl implements Log
 
             @Override
             public void onError(Throwable e) {
-                listener.onFailure(e.getMessage());
+                // TODO: Server fix required to handle no-data-error in case of new user
+                listener.onFailure(mContext.getString(R.string.error_no_user_data_found));
                 listener.onComplete();
             }
 
             @Override
             public void onNext(AppUser appUser) {
-                mAppUser.updateData(appUser.getName(), appUser.getEmail(), appUser.getSortOrder());
+                mAppUser.setSortOrder(appUser.getSortOrder());
                 mAppUser.setFavouritesIds(appUser.getFavouritesIds());
-                mAppUser.setLoggedIn(true);
-                updateCache();
-                listener.onFetchSettings(getAppUser());
             }
         });
+        updateCache();
+        listener.onFetchSettings(getAppUser());
     }
 
     @Override

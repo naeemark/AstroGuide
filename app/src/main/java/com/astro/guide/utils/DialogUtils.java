@@ -16,7 +16,7 @@ import com.astro.guide.features.login.view.impl.LoginActivity;
 
 public class DialogUtils {
 
-    public static void showLoginAlertDialog(final Context context) {
+    public static <V> void showLoginAlertDialog(final Context context) {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setMessage(R.string.prompt_please_login)
                 .setCancelable(true)
@@ -30,6 +30,35 @@ public class DialogUtils {
                     }
                 })
                 .setNegativeButton(R.string.lbl_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+
+    public static <V> void showAboutDialog(Context context) {
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setMessage(R.string.lbl_about)
+                .setCancelable(true)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+
+    public static void showLogoutPromptDialog(Context context, String prompt, DialogInterface.OnClickListener positiveListener) {
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setMessage(prompt)
+                .setCancelable(true)
+                .setPositiveButton(android.R.string.yes, positiveListener)
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

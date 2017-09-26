@@ -33,6 +33,7 @@ import com.astro.guide.features.login.view.impl.LoginActivity;
 import com.astro.guide.features.onair.view.impl.OnAirActivity;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
+import com.astro.guide.utils.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -296,6 +297,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     @Override
     public void logout() {
         Timber.e("updateUi()");
+    }
+
+    @Override
+    public void showLoginAlertDialog() {
+        DialogUtils.showLoginAlertDialog(this);
     }
 
     @Override
