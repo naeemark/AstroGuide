@@ -14,6 +14,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "int", "CACHE_MINUTES", CACHE_MINUTES
+        buildConfigField "String", "BASE_URL", "\"http://ams-api.astro.com.my\""
+        buildConfigField "String", "BASE_URL_AWS", "\"http://104.199.224.26:8000\""
     }
     signingConfigs {
         release {

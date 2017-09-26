@@ -8,11 +8,9 @@ public interface LoginInteractor extends BaseInteractor {
 
     void logout(OnSyncSettingsListener listener);
 
-    void fetchAppUserSettings(OnSyncSettingsListener listener);
+    void fetchAppUserSettings(GoogleSignInAccount acct, OnSyncSettingsListener listener);
 
     AppUser getAppUser();
-
-    void updateAppUser(GoogleSignInAccount account);
 
     void updateCache();
 

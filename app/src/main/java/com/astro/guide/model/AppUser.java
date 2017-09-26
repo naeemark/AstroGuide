@@ -81,6 +81,12 @@ public class AppUser {
         this.favouritesIds = favouritesIds;
     }
 
+    public void updateData(String name, String email, int sortOrder) {
+        this.name = name;
+        this.email = email;
+        this.sortOrder = sortOrder;
+    }
+
     @Override
     public String toString() {
         return "AppUser{" +

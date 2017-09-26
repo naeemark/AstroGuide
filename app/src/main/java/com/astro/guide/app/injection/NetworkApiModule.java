@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public final class NetworkApiModule {
 
-    private static final int REQUEST_TIMEOUT_SECONDS = 20;
+    private static final int REQUEST_TIMEOUT_SECONDS = 30;
 
     private String mBaseUrl;
 

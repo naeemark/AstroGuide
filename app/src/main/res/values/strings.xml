@@ -27,5 +27,8 @@
     <string name="sign_out">Logout</string>
     <string name="error_connection_failed">Connection attempt Failed</string>
     <string name="prompt_welcom_prefix">Welcome\n %s</string>
+    <string name="prompt_please_login">Please Login before the action!</string>
+    <string name="lbl_login">Login</string>
+    <string name="lbl_cancel">Cancel</string>
 
 </resources>

@@ -22,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
@@ -113,22 +112,24 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
     public void onStart() {
         super.onStart();
 
-        mGoogleApiClient.connect();
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            Timber.i("Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            mPresenter.handleSignInResult(result);
-        } else {
-            showLoading("Logging In");
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    hideLoading();
-                    mPresenter.handleSignInResult(googleSignInResult);
-                }
-            });
-        }
+        //ToDO: Not required in current scope, but usefull for sharing auth from cache
+//        mGoogleApiClient.connect();
+//        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+//        assert mPresenter != null;
+//        if (opr.isDone()) {
+//            Timber.i("Got cached sign-in");
+//            GoogleSignInResult result = opr.get();
+//            mPresenter.handleSignInResult(result);
+//        } else {
+//            showLoading("Logging In");
+//            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+//                @Override
+//                public void onResult(GoogleSignInResult googleSignInResult) {
+//                    hideLoading();
+//                    mPresenter.handleSignInResult(googleSignInResult);
+//                }
+//            });
+//        }
     }
 
     private void startLogin() {
@@ -143,6 +144,7 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            assert mPresenter != null;
             mPresenter.handleSignInResult(result);
         }
     }
@@ -161,13 +163,13 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
 
     @Override
     public void logout() {
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status status) {
-                            Timber.e(status.getStatusMessage());
-                        }
-                    });
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Timber.e(status.getStatusMessage());
+                    }
+                });
     }
 
     @Override

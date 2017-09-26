@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 
+import com.astro.guide.R;
 import com.astro.guide.features.login.view.impl.LoginActivity;
 
 /**
@@ -17,9 +18,9 @@ public class DialogUtils {
 
     public static void showLoginAlertDialog(final Context context) {
         AlertDialog dialog = new AlertDialog.Builder(context)
-                .setMessage("Please Login before the action!")
+                .setMessage(R.string.prompt_please_login)
                 .setCancelable(true)
-                .setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.lbl_login, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(context, LoginActivity.class);
@@ -28,7 +29,7 @@ public class DialogUtils {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.lbl_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

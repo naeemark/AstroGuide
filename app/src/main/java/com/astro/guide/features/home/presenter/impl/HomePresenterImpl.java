@@ -134,7 +134,6 @@ public final class HomePresenterImpl extends BasePresenterImpl<HomeView> impleme
         if (channelList.isEmpty()){
             mView.showPrompt(mInteractor.getEmptyListPromptText());
         }
-
         mView.loadList(channelList);
     }
 }

@@ -51,8 +51,7 @@ public final class LoginPresenterImpl extends BasePresenterImpl<LoginView> imple
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            mInteractor.updateAppUser(acct);
-            mInteractor.fetchAppUserSettings(this);
+            mInteractor.fetchAppUserSettings(acct, this);
         } else {
             // Signed out, show unauthenticated UI.
 
