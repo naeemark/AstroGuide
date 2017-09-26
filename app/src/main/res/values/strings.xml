@@ -26,5 +26,6 @@
     <string name="prompt_no_event_found">No event available!</string>
     <string name="sign_out">Logout</string>
     <string name="error_connection_failed">Connection attempt Failed</string>
+    <string name="prompt_welcom_prefix">Welcome\n %s</string>
 
 </resources>

@@ -22,9 +22,10 @@
     <TextView
         android:id="@+id/textView_userName"
         style="@style/TextTitle"
+        android:gravity="center_horizontal"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/padding_average"/>
+        android:layout_marginTop="@dimen/padding_maximum"/>
 
 
     <LinearLayout

@@ -11,14 +11,12 @@ import com.astro.guide.R;
 import com.astro.guide.app.injection.AppComponent;
 import com.astro.guide.app.presenter.loader.PresenterFactory;
 import com.astro.guide.app.view.impl.BaseActivity;
-import com.astro.guide.constants.AppConstants;
 import com.astro.guide.features.login.injection.DaggerLoginViewComponent;
 import com.astro.guide.features.login.injection.LoginViewModule;
 import com.astro.guide.features.login.presenter.LoginPresenter;
 import com.astro.guide.features.login.view.LoginView;
 import com.astro.guide.model.AppUser;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -116,57 +114,20 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
         super.onStart();
 
         mGoogleApiClient.connect();
-//
-//        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-//        if (opr.isDone()) {
-//            Timber.i("Got cached sign-in");
-//            GoogleSignInResult result = opr.get();
-//            mPresenter.handleSignInResult(result);
-//        } else {
-//            showLoading("Logging In");
-//            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-//                @Override
-//                public void onResult(GoogleSignInResult googleSignInResult) {
-//                    hideLoading();
-//                    mPresenter.handleSignInResult(googleSignInResult);
-//                }
-//            });
-//        }
-
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
-            Timber.d("Got cached sign-in");
+            Timber.i("Got cached sign-in");
             GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
+            mPresenter.handleSignInResult(result);
         } else {
-            showLoading("logging in...");
+            showLoading("Logging In");
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
                     hideLoading();
-                    handleSignInResult(googleSignInResult);
+                    mPresenter.handleSignInResult(googleSignInResult);
                 }
             });
-        }
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        Timber.d("handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-
-            AppUser a = new AppUser(acct.getDisplayName(), acct.getEmail(), AppConstants.SortOrder.SORT_BY_NAME.ordinal());
-            a.setLoggedIn(true);
-
-            updateUi(a);
-
-        } else {
-            // Signed out, show unauthenticated UI.
-            AppUser a = new AppUser("XXX", "XXXX", AppConstants.SortOrder.SORT_BY_NAME.ordinal());
-            a.setLoggedIn(false);
-
-            updateUi(a);
         }
     }
 
@@ -188,7 +149,7 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
 
     @Override
     public void updateUi(AppUser appUser) {
-        mUserNameTextView.setText(appUser.getName());
+        mUserNameTextView.setText(getString(R.string.prompt_welcom_prefix, appUser.getName()));
         if (appUser.isLoggedIn()) {
             mLogoutButton.setVisibility(View.VISIBLE);
             mLoginButton.setVisibility(View.GONE);

@@ -20,6 +20,8 @@
 
     <View
         android:layout_width="@dimen/sep_line_width"
+        android:layout_marginTop="@dimen/padding_maximum"
+        android:layout_marginBottom="@dimen/padding_maximum"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark" />
 
@@ -33,6 +35,7 @@
         <TextView
             android:id="@+id/textView_userName"
             style="@style/TextTitle"
+            android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/padding_maximum"
             android:textStyle="bold|italic"/>
