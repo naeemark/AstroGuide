@@ -37,6 +37,15 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
     private final AppCacheManager mAppCacheManager;
     private final AppUser mAppUser;
 
+    /**
+     * Provides params by Models - Dependency Injects
+     * @param context
+     * @param channelsApiService
+     * @param preferencesUtils
+     * @param channelParser
+     * @param appCacheManager
+     * @param appUser
+     */
     @Inject
     public HomeInteractorImpl(Context context, ChannelsApiService channelsApiService, PreferencesUtils preferencesUtils, ChannelParser channelParser, AppCacheManager appCacheManager, AppUser appUser) {
         mContext = context;
@@ -57,6 +66,10 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
         return NetworkUtils.isNetAvailable(mContext);
     }
 
+    /**
+     * Tries cache if data available, passes to API fether instead
+     * @param listener
+     */
     @Override
     public void fetchData(final OnFetchDataListener listener) {
         String cachedData = mAppCacheManager.fetch(CacheTag.CHANNELS.name());
@@ -69,6 +82,10 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
         }
     }
 
+    /**
+     * Provides Favourits by comparing the ids with favList in AppUser
+     * @param listener
+     */
     @Override
     public void fetchFavouritesData(OnFetchDataListener listener) {
         String cachedData = mAppCacheManager.fetch(CacheTag.CHANNELS.name());
@@ -88,6 +105,10 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
         }
     }
 
+    /**
+     * Fetches data from the API
+     * @param listener
+     */
     private void fetchDataFromApi(final OnFetchDataListener listener) {
         listener.onStart();
 
@@ -137,6 +158,9 @@ public final class HomeInteractorImpl extends BaseInteractorImpl implements Home
         sortChannelsList(channelList, presenter);
     }
 
+    /**
+     * Updates cache for AppUser
+     */
     @Override
     public void updateCache() {
         Timber.e(mAppUser.toString());

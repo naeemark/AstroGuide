@@ -23,6 +23,10 @@ public class DateTimeUtils {
     private static final int HOURS_BEHIND = 2;
     private static final int HOURS_AHEAD = 1;
 
+    /**
+     * Provides an array of Two Strings for start and end time to be sent as param
+     * @return
+     */
     public static String[] getTimeRequestParams() {
         SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_API_REQUEST_PARAM);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
@@ -38,6 +42,13 @@ public class DateTimeUtils {
     }
 
 
+    /**
+     * Determines server timezone id on the base of difference b/w two timestamps of same time
+     * @param timeStringUtc UTC time for the event
+     * @param timeString Server/API time for the event
+     * @param sdf SimpleDateFormat
+     * @return
+     */
     public static String getServerTimeZoneId(String timeStringUtc, String timeString, SimpleDateFormat sdf) {
         try {
             Date dateUtc = sdf.parse(timeStringUtc);
@@ -60,6 +71,12 @@ public class DateTimeUtils {
         return TimeZone.getDefault().getDisplayName();
     }
 
+    /**
+     * Checks if the event is not expired
+     * @param event
+     * @return
+     * @throws ParseException
+     */
     public static boolean isEventAlive(Event event) throws ParseException {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
         SimpleDateFormat parser = new SimpleDateFormat("HH:mm:ss");
@@ -89,6 +106,12 @@ public class DateTimeUtils {
     }
 
 
+    /**
+     * Formates timestamp tp shos in list item
+     * @param event
+     * @return
+     * @throws ParseException
+     */
     public static String getFormatedDateTime(Event event) throws ParseException {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
@@ -99,6 +122,11 @@ public class DateTimeUtils {
         return sdf.format(parse);
     }
 
+    /**
+     * Finds current event from the list
+     * @param events Events from a Channel
+     * @return Current Event
+     */
     public static Event getCurrentEvent(List<Event> events) {
         for (Event event : events) {
             try {

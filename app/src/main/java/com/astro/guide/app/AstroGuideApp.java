@@ -20,6 +20,7 @@ public final class AstroGuideApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Shows logs only in Debug Build type
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }

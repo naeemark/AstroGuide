@@ -14,6 +14,13 @@ import java.util.List;
  */
 
 public class SortUtils {
+
+    /**
+     * Sorts the given list according to provided sortOrder
+     * @param channels
+     * @param sortOrder
+     * @return
+     */
     public static List<Channel> sortList(List<Channel> channels, AppConstants.SortOrder sortOrder) {
         if(sortOrder.equals(AppConstants.SortOrder.SORT_BY_NAME)){
             return sortListByName(channels);

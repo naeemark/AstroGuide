@@ -24,7 +24,9 @@ import com.astro.guide.constants.AppConstants;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-
+/**
+ * Provides Utility to play with shared prefs
+ */
 @Singleton
 public class PreferencesUtils {
 

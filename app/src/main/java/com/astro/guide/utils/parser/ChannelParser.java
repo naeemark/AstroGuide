@@ -20,6 +20,9 @@ import javax.inject.Singleton;
  * @since 23/9/2017
  */
 
+/**
+ * A utility to provide parser
+ */
 @Singleton
 public class ChannelParser {
 
@@ -27,6 +30,11 @@ public class ChannelParser {
     public ChannelParser() {
     }
 
+    /**
+     * Returns list of parsed elements
+     * @param response
+     * @return
+     */
     public List<Channel> parseChannels(ChannelsResponse response) {
         List<Channel> channelList = new ArrayList<>();
 
@@ -43,6 +51,11 @@ public class ChannelParser {
         return channelList;
     }
 
+    /**
+     * sets data into given map
+     * @param eventsResponse
+     * @param channelMap
+     */
     public void mapEventsToChannels(EventsResponse eventsResponse, Map<Integer, Channel> channelMap) {
         if (eventsResponse != null) {
             EventsResponseGetevent[] events = eventsResponse.getGetevent();

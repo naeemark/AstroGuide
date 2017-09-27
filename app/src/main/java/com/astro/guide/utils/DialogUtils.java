@@ -16,7 +16,11 @@ import com.astro.guide.features.login.view.impl.LoginActivity;
 
 public class DialogUtils {
 
-    public static <V> void showLoginAlertDialog(final Context context) {
+    /**
+     * Shows a dialog to prompt that login is required
+     * @param context
+     */
+    public static void showLoginAlertDialog(final Context context) {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setMessage(R.string.prompt_please_login)
                 .setCancelable(true)
@@ -39,6 +43,11 @@ public class DialogUtils {
         dialog.show();
     }
 
+    /**
+     * Shows About
+     * @param context
+     * @param <V>
+     */
     public static <V> void showAboutDialog(Context context) {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setMessage(R.string.lbl_about)
@@ -53,6 +62,12 @@ public class DialogUtils {
         dialog.show();
     }
 
+    /**
+     * Not in use
+     * @param context
+     * @param prompt
+     * @param positiveListener
+     */
     public static void showLogoutPromptDialog(Context context, String prompt, DialogInterface.OnClickListener positiveListener) {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setMessage(prompt)

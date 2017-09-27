@@ -18,6 +18,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 
 public class ImageUtils {
 
+    /**
+     * Generifies the image loading through the application
+     * @param context
+     * @param target
+     * @param url
+     */
     public static void loadImage(Context context, final ImageView target, String url) {
         Glide.with(context)
                 .load((url == null) ? R.drawable.ic_launcher_round_web : url)
