@@ -1,7 +1,5 @@
 package com.astro.guide.model;
 
-import android.net.Uri;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +26,7 @@ public class AppUser {
 
     private Set<Integer> favouritesIds = new HashSet<>();
 
-    private Uri photoUrl;
+    private String photoUrl;
 
     @Inject
     public AppUser(String name, String email, int sortOrder) {
@@ -85,11 +83,11 @@ public class AppUser {
         this.favouritesIds = favouritesIds;
     }
 
-    public Uri getPhotoUrl() {
+    public String getPhotoUrl() {
         return photoUrl;
     }
 
-    public void setPhotoUrl(Uri photoUrl) {
+    public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
 

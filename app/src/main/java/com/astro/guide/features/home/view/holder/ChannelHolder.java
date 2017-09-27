@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,10 +15,7 @@ import com.astro.guide.features.home.view.HomeView;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 import com.astro.guide.utils.DialogUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.astro.guide.utils.ImageUtils;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
 import butterknife.BindView;
@@ -73,26 +69,15 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
             mFavButton.setVisibility(View.GONE);
         } else {
             showFavButton();
+            if (mAppUser.isLoggedIn()) {
+                mFavButton.setOnFavoriteChangeListener(this);
+            } else {
+                mFavButton.setOnClickListener(this);
+            }
         }
 
+        ImageUtils.loadImage(mContext, mLogoImageView, mChannel.getLogoUrl());
 
-        Glide.with(mContext)
-                .load(mChannel.getLogoUrl())
-                .asBitmap()
-                .placeholder(R.mipmap.ic_launcher_round)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap arg0, GlideAnimation<? super Bitmap> arg1) {
-                        mLogoImageView.setImageBitmap(arg0);
-                    }
-                });
-
-        if (mAppUser.isLoggedIn()) {
-            mFavButton.setOnFavoriteChangeListener(this);
-        } else {
-            mFavButton.setOnClickListener(this);
-        }
     }
 
     private void showFavButton() {
@@ -100,7 +85,6 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
         mFavButton.setOnFavoriteChangeListener(null);
         mFavButton.setFavorite(mAppUser.getFavouritesIds().contains(mChannel.getId()), false);
         mFavButton.setVisibility(View.VISIBLE);
-        mFavButton.setOnFavoriteChangeListener(this);
     }
 
     @Override

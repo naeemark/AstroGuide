@@ -2,7 +2,6 @@ package com.astro.guide.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.widget.ImageView;
 
 import com.astro.guide.R;
@@ -20,12 +19,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 public class ImageUtils {
 
     public static void loadImage(Context context, final ImageView target, String url) {
-        loadImage(context, target, Uri.parse(url));
-    }
-
-    public static void loadImage(Context context, final ImageView target, Uri uri) {
         Glide.with(context)
-                .load((uri == null) ? R.drawable.ic_launcher_round_web : uri)
+                .load((url == null) ? R.drawable.ic_launcher_round_web : url)
                 .asBitmap()
                 .placeholder(R.mipmap.ic_launcher_round)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)

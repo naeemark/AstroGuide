@@ -50,7 +50,7 @@ public final class LoginInteractorImpl extends BaseInteractorImpl implements Log
 
         mAppUser.setName(acct.getDisplayName());
         mAppUser.setEmail(acct.getEmail());
-        mAppUser.setPhotoUrl(acct.getPhotoUrl());
+        mAppUser.setPhotoUrl((acct.getPhotoUrl() == null) ? null : acct.getPhotoUrl().getPath());
         mAppUser.setLoggedIn(true);
 
         listener.onStart();

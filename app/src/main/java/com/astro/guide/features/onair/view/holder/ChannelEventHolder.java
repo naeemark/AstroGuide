@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,10 +15,7 @@ import com.astro.guide.features.details.ItemDetailsActivity;
 import com.astro.guide.model.Channel;
 import com.astro.guide.model.Event;
 import com.astro.guide.utils.DateTimeUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.astro.guide.utils.ImageUtils;
 
 import java.text.ParseException;
 
@@ -75,7 +71,7 @@ public class ChannelEventHolder extends RecyclerView.ViewHolder {
         mChannelNumber.setText(mContext.getString(R.string.stb_prefix, channel.getStbNumber()));
         mChannelName.setText(channel.getTitle());
 
-        loadImage(channel.getLogoUrl());
+        ImageUtils.loadImage(mContext, mLogoImageView, channel.getLogoUrl());
 
 
         View.OnClickListener channelClickListener = getEventClickListener(
@@ -102,21 +98,6 @@ public class ChannelEventHolder extends RecyclerView.ViewHolder {
                     currentEvent.getShortSynopsis(), currentEvent.getEpgEventImage(), channel.getLogoUrl()));
         }
     }
-
-    private void loadImage(String logoUrl) {
-        Glide.with(mContext)
-                .load(logoUrl)
-                .asBitmap()
-                .placeholder(R.mipmap.ic_launcher_round)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap arg0, GlideAnimation<? super Bitmap> arg1) {
-                        mLogoImageView.setImageBitmap(arg0);
-                    }
-                });
-    }
-
 
     private View.OnClickListener getEventClickListener(final String header, final String title, final String subTitle, final String description, final String channelLogo, final String eventImage) {
         return new View.OnClickListener() {
