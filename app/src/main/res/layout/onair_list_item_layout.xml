@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linearLayout_channel"
+            android:id="@+id/linearLayout_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -64,10 +64,24 @@
             android:layout_height="@dimen/sep_line_width"
             android:background="@color/colorSepLine"/>
 
-        <TextView
-            android:id="@+id/textview_channel"
-            style="@style/TextTitle"
-            android:layout_margin="@dimen/padding_average"/>
+        <LinearLayout
+            android:id="@+id/linearLayout_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_average">
+
+            <TextView
+                android:id="@+id/textview_channel_number"
+                style="@style/Text"
+                android:layout_marginEnd="@dimen/padding_average"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:id="@+id/textview_channel_name"
+                style="@style/TextTitle"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

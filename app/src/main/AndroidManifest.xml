@@ -32,6 +32,7 @@
             android:label="@string/title_activity_onair"/>
         <activity android:name=".features.login.view.impl.LoginActivity"
             android:label="@string/app_name" />
+        <activity android:name=".features.details.ItemDetailsActivity" />
     </application>
 
 </manifest>

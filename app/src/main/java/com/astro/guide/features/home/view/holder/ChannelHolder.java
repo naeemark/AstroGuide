@@ -1,26 +1,32 @@
 package com.astro.guide.features.home.view.holder;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.astro.guide.R;
+import com.astro.guide.features.details.ItemDetailsActivity;
 import com.astro.guide.features.home.view.HomeView;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.model.Channel;
 import com.astro.guide.utils.DialogUtils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.astro.guide.utils.ImageUtils;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
+
+import static com.astro.guide.features.details.ItemDetailsActivity.EXTRA_CONTENT_DESCRIPTION;
+import static com.astro.guide.features.details.ItemDetailsActivity.EXTRA_CONTENT_SUBTITLE;
+import static com.astro.guide.features.details.ItemDetailsActivity.EXTRA_CONTENT_TITLE;
+import static com.astro.guide.features.details.ItemDetailsActivity.EXTRA_CONTENT_URL;
+import static com.astro.guide.features.details.ItemDetailsActivity.EXTRA_LABEL_HEADER;
 
 /**
  * @author Naeem <naeemark@gmail.com>
@@ -57,58 +63,57 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
 
         mChannel = channel;
         mTitle.setText(mChannel.getTitle());
-        mNumber.setText(String.valueOf(mChannel.getStbNumber()));
+        mNumber.setText(mContext.getString(R.string.stb_prefix, mChannel.getStbNumber()));
 
         if (mAppUser.isHideFavouriteButton()) {
             mFavButton.setVisibility(View.GONE);
         } else {
-            showFavButton();
+//            showFavButton();
+            mFavButton.setOnFavoriteChangeListener(null);
+//            mFavButton.setOnClickListener(null);
+            mFavButton.setFavorite(mAppUser.getFavouritesIds().contains(mChannel.getId()), false);
+            mFavButton.setVisibility(View.VISIBLE);
+            if (mAppUser.isLoggedIn()) {
+                mFavButton.setOnFavoriteChangeListener(this);
+            } else {
+                mFavButton.setOnClickListener(this);
+            }
         }
 
+        ImageUtils.loadImage(mContext, mLogoImageView, mChannel.getLogoUrl());
 
-        Glide.with(mContext)
-                .load(mChannel.getLogoUrl())
-                .asBitmap()
-                .placeholder(R.mipmap.ic_launcher_round)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap arg0, GlideAnimation<? super Bitmap> arg1) {
-                        mLogoImageView.setImageBitmap(arg0);
-                    }
-                });
-
-        if (mAppUser.isLoggedIn()) {
-            mFavButton.setOnFavoriteChangeListener(this);
-        } else {
-            mFavButton.setOnClickListener(this);
-        }
     }
 
     private void showFavButton() {
         // To avoid inconsistency, set null as FavoriteChangeListener
         mFavButton.setOnFavoriteChangeListener(null);
+        mFavButton.setOnClickListener(null);
         mFavButton.setFavorite(mAppUser.getFavouritesIds().contains(mChannel.getId()), false);
         mFavButton.setVisibility(View.VISIBLE);
-        mFavButton.setOnFavoriteChangeListener(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button_fav) {
-            DialogUtils.showLoginAlertDialog(mContext);
+            if (!mAppUser.isLoggedIn()) {
+                DialogUtils.showLoginAlertDialog(mContext);
+            }
+        } else {
+            Intent intent = new Intent(mContext, ItemDetailsActivity.class);
+
+            intent.putExtra(EXTRA_LABEL_HEADER, mContext.getString(R.string.title_details));
+            intent.putExtra(EXTRA_CONTENT_URL, mChannel.getLogoUrl());
+            intent.putExtra(EXTRA_CONTENT_TITLE, mChannel.getTitle());
+            intent.putExtra(EXTRA_CONTENT_SUBTITLE, mContext.getString(R.string.stb_prefix, mChannel.getStbNumber()));
+            intent.putExtra(EXTRA_CONTENT_DESCRIPTION, mChannel.getDescription());
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, mLogoImageView, "TransitionName");
+                mContext.startActivity(intent, options.toBundle());
+            } else {
+                mContext.startActivity(intent);
+            }
         }
-// else {
-//            Intent intent = new Intent(mContext, DetailActivity.class);
-//            intent.putExtra(DetailActivity.CHANNEL, mChannel);
-//
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-//                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, mLogoImageView, "logoImageAnimation");
-//                mContext.startActivity(intent, options.toBundle());
-//            } else {
-//                mContext.startActivity(intent);
-//            }
-//        }
     }
 
     @Override

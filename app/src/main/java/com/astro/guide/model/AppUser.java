@@ -26,6 +26,8 @@ public class AppUser {
 
     private Set<Integer> favouritesIds = new HashSet<>();
 
+    private String photoUrl;
+
     @Inject
     public AppUser(String name, String email, int sortOrder) {
         this.name = name;
@@ -81,6 +83,14 @@ public class AppUser {
         this.favouritesIds = favouritesIds;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
     public void updateData(String name, String email, int sortOrder) {
         this.name = name;
         this.email = email;
@@ -92,6 +102,7 @@ public class AppUser {
         return "AppUser{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
                 ", isLoggedIn='" + isLoggedIn + '\'' +
                 ", sortOrder=" + sortOrder +
                 ", hideFavouriteButton=" + hideFavouriteButton +
