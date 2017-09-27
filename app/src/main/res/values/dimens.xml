@@ -23,6 +23,7 @@
     <dimen name="card_corner_radius">3dp</dimen>
 
 
-    <dimen name="textSize">14sp</dimen>
+    <dimen name="textSize">15sp</dimen>
     <dimen name="titleTextSize">16sp</dimen>
+    <dimen name="height_details_logo">256dp</dimen>
 </resources>

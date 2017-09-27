@@ -32,5 +32,8 @@
     <string name="lbl_cancel">Cancel</string>
     <string name="error_no_user_data_found">No Settings downloaded!</string>
     <string name="lbl_about">Developed for Astro Recruitment on 09/25/2017!</string>
+    <string name="title_details">Channel</string>
+    <string name="title_details_event">Event</string>
+    <string name="stb_prefix">CH:&#160;%s</string>
 
 </resources>

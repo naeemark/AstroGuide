@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.astro.guide.R;
@@ -16,6 +17,7 @@ import com.astro.guide.features.login.injection.LoginViewModule;
 import com.astro.guide.features.login.presenter.LoginPresenter;
 import com.astro.guide.features.login.view.LoginView;
 import com.astro.guide.model.AppUser;
+import com.astro.guide.utils.ImageUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -35,6 +37,9 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
     private static final int RC_SIGN_IN = 9001;
     @Inject
     PresenterFactory<LoginPresenter> mPresenterFactory;
+
+    @BindView(R.id.imageView)
+    protected ImageView mUserDpImageView;
 
     @BindView(R.id.textView_userName)
     protected TextView mUserNameTextView;
@@ -152,12 +157,14 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
     @Override
     public void updateUi(AppUser appUser) {
         mUserNameTextView.setText(getString(R.string.prompt_welcom_prefix, appUser.getName()));
+        ImageUtils.loadImage(this, mUserDpImageView, appUser.getPhotoUrl());
         if (appUser.isLoggedIn()) {
             mLogoutButton.setVisibility(View.VISIBLE);
             mLoginButton.setVisibility(View.GONE);
         } else {
             mLogoutButton.setVisibility(View.GONE);
             mLoginButton.setVisibility(View.VISIBLE);
+            mUserDpImageView.setBackgroundResource(R.mipmap.ic_launcher_round);
         }
     }
 
@@ -178,4 +185,10 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
         showErrorWithMessage(getString(R.string.error_connection_failed));
     }
 
+    @Override
+    public void onBackPressed() {
+        Timber.e("onBackPressed()");
+        super.onBackPressed();
+        setResult(RESULT_OK);
+    }
 }
