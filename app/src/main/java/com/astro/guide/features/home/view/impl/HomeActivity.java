@@ -292,7 +292,7 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     @Override
     public void launchLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, RESULT_OK);
     }
 
     @Override
@@ -314,5 +314,11 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeView> implemen
     public void showPrompt(String promptText) {
         mPromptTextView.setText(promptText);
         mPromptTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        showList();
     }
 }

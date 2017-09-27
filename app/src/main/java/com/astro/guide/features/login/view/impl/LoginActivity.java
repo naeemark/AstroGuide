@@ -185,4 +185,10 @@ public final class LoginActivity extends BaseActivity<LoginPresenter, LoginView>
         showErrorWithMessage(getString(R.string.error_connection_failed));
     }
 
+    @Override
+    public void onBackPressed() {
+        Timber.e("onBackPressed()");
+        super.onBackPressed();
+        setResult(RESULT_OK);
+    }
 }

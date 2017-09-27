@@ -50,8 +50,9 @@ public final class LoginInteractorImpl extends BaseInteractorImpl implements Log
 
         mAppUser.setName(acct.getDisplayName());
         mAppUser.setEmail(acct.getEmail());
-        mAppUser.setPhotoUrl((acct.getPhotoUrl() == null) ? null : acct.getPhotoUrl().getPath());
+        mAppUser.setPhotoUrl((acct.getPhotoUrl() == null) ? null : acct.getPhotoUrl().toString());
         mAppUser.setLoggedIn(true);
+        updateCache();
 
         listener.onStart();
 
@@ -74,9 +75,9 @@ public final class LoginInteractorImpl extends BaseInteractorImpl implements Log
             public void onNext(AppUser appUser) {
                 mAppUser.setSortOrder(appUser.getSortOrder());
                 mAppUser.setFavouritesIds(appUser.getFavouritesIds());
+                updateCache();
             }
         });
-        updateCache();
         listener.onFetchSettings(getAppUser());
     }
 

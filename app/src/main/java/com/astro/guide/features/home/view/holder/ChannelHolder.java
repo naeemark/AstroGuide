@@ -68,7 +68,11 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
         if (mAppUser.isHideFavouriteButton()) {
             mFavButton.setVisibility(View.GONE);
         } else {
-            showFavButton();
+//            showFavButton();
+            mFavButton.setOnFavoriteChangeListener(null);
+//            mFavButton.setOnClickListener(null);
+            mFavButton.setFavorite(mAppUser.getFavouritesIds().contains(mChannel.getId()), false);
+            mFavButton.setVisibility(View.VISIBLE);
             if (mAppUser.isLoggedIn()) {
                 mFavButton.setOnFavoriteChangeListener(this);
             } else {
@@ -83,6 +87,7 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
     private void showFavButton() {
         // To avoid inconsistency, set null as FavoriteChangeListener
         mFavButton.setOnFavoriteChangeListener(null);
+        mFavButton.setOnClickListener(null);
         mFavButton.setFavorite(mAppUser.getFavouritesIds().contains(mChannel.getId()), false);
         mFavButton.setVisibility(View.VISIBLE);
     }
@@ -90,7 +95,9 @@ public class ChannelHolder extends RecyclerView.ViewHolder implements View.OnCli
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button_fav) {
-            DialogUtils.showLoginAlertDialog(mContext);
+            if (!mAppUser.isLoggedIn()) {
+                DialogUtils.showLoginAlertDialog(mContext);
+            }
         } else {
             Intent intent = new Intent(mContext, ItemDetailsActivity.class);
 
