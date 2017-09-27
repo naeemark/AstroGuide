@@ -90,20 +90,20 @@ The project can be distributed using [Google Play Store](https://github.com/Trip
 - forks are always appreciated
 
 ## Screenshots ##
-&nbsp;
-![Screenshot](screenshots/0.png) &nbsp;
-![Screenshot](screenshots/1.png) &nbsp;
-![Screenshot](screenshots/2.png) &nbsp;
-![Screenshot](screenshots/3.png) &nbsp;
-![Screenshot](screenshots/3b.png) &nbsp;
-![Screenshot](screenshots/3c.png) &nbsp;
-![Screenshot](screenshots/3d.png) &nbsp;
-![Screenshot](screenshots/3e.png) &nbsp;
-![Screenshot](screenshots/3f.png) &nbsp;
-![Screenshot](screenshots/4.png) &nbsp;
-![Screenshot](screenshots/5.png) &nbsp;
-![Screenshot](screenshots/6.png) &nbsp;
-![Screenshot](screenshots/6b.png) &nbsp;
-![Screenshot](screenshots/7.png) &nbsp;
-![Screenshot](screenshots/7b.png) &nbsp;
-![Screenshot](screenshots/7c.png) &nbsp;
+
+![Screenshot](screenshots/0.png)
+![Screenshot](screenshots/1.png)
+![Screenshot](screenshots/2.png)
+![Screenshot](screenshots/3.png)
+![Screenshot](screenshots/3b.png)
+![Screenshot](screenshots/3c.png)
+![Screenshot](screenshots/3d.png)
+![Screenshot](screenshots/3e.png)
+![Screenshot](screenshots/3f.png)
+![Screenshot](screenshots/4.png)
+![Screenshot](screenshots/5.png)
+![Screenshot](screenshots/6.png)
+![Screenshot](screenshots/6b.png)
+![Screenshot](screenshots/7.png)
+![Screenshot](screenshots/7b.png)
+![Screenshot](screenshots/7c.png)
