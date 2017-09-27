@@ -11,8 +11,17 @@ Demonstration of Requirements understanding, proposing a solution and implementa
 
 ### Application Flow ###
 
-_to be provided later_
-
+- A: User Clicks on App Icon for device 
+- B: Splash appear
+- C: After splash delay, Home Screen Appears
+- D: It loads Channel list on HomeScreen, if network is available
+- E: After list loaded, on click of Favorite button, a dialog will appear with prompt
+- F: If list row is clicked, it will show you details screen for that clicked elemnt
+- G: From Navigation drawer, click on On Air and it will show you the list of channels with currently on-air events
+- H: Two links to login screen, click Login button on prompt dialog or click Profile on Navigation Drawer menu
+- H: Click Profile on Navigation Drawer menu to logout after a successful login
+- I: user can login using Google Account
+- J: **It will update the events/date time if use changes the timezone of the device**
 
 ## How do I get set up? ##
 
@@ -51,6 +60,11 @@ Please sync and resolve dependencies
 - [`SharedPreferences`](https://developer.android.com/reference/android/content/SharedPreferences.html) are used for local persistance of preferences
 
 ### Remote Storage ###
+
+- Using `AWS-EC2` instance
+- http://104.199.224.26:8000/api with `GET` and `POST`
+
+
 #### SSO Auth ####
 - Google Authentication API
 #### Settings Persistance ####
