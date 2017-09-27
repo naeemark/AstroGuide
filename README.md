@@ -52,6 +52,7 @@ Please sync and resolve dependencies
 - [Glide](https://github.com/bumptech/glide)
 - Functional tests with [Espresso](https://google.github.io/android-testing-support-library/docs/espresso/index.html)
 - [Mockito](http://mockito.org/)
+- [MVP Boilerplate](https://github.com/benoitletondor/Android-Studio-MVP-template)
 
 
 ## Storage ##
@@ -63,6 +64,7 @@ Please sync and resolve dependencies
 
 - Using `AWS-EC2` instance
 - http://104.199.224.26:8000/api with `GET` and `POST`
+- Code for review is available in [server_aws/test-api.py](server_aws/test-api.py)
 
 
 #### SSO Auth ####

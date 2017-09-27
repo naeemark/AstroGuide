@@ -2,7 +2,6 @@ package com.astro.guide.webapi;
 
 import com.astro.guide.model.AppUser;
 
-import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -23,5 +22,5 @@ public interface AppUserApiService {
 
     @FormUrlEncoded
     @POST("/api")
-    Call<String> post(@Field("email") String email, @Field("data") String data);
+    Observable<String> post(@Field("email") String email, @Field("data") String data);
 }

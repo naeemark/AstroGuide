@@ -14,9 +14,6 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Observer;
 import timber.log.Timber;
@@ -83,21 +80,28 @@ public final class LoginInteractorImpl extends BaseInteractorImpl implements Log
 
     @Override
     public void logout(final OnSyncSettingsListener listener) {
-        Timber.i("updateUi(OnLogoutListener listener)");
+        Timber.i("logout(OnSyncSettingsListener listener)");
         listener.onStart();
-        Call<String> call = mApiService.post(mAppUser.getEmail(), new Gson().toJson(mAppUser));
-        call.enqueue(new Callback<String>() {
+
+        Observable<String> observable = mApiService.post(mAppUser.getEmail(), new Gson().toJson(mAppUser));
+
+        subscribe(observable, new Observer<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                clearAppUser();
-                listener.onUploadSettings(getAppUser());
+            public void onCompleted() {
                 listener.onComplete();
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onError(Throwable t) {
                 listener.onFailure(t.getMessage());
+                listener.onFailure(mContext.getString(R.string.error_no_user_data_uploaded));
                 listener.onComplete();
+            }
+
+            @Override
+            public void onNext(String response) {
+                clearAppUser();
+                listener.onUploadSettings(getAppUser());
             }
         });
     }
