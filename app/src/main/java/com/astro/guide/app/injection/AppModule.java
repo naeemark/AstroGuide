@@ -36,8 +36,8 @@ public final class AppModule {
 
     @Singleton
     @Provides
-    public AppCacheManager providesCacheManager(PreferencesUtils preferencesUtils){
-        return new AppCacheManager(preferencesUtils);
+    public AppCacheManager providesCacheManager(Context context, PreferencesUtils preferencesUtils){
+        return new AppCacheManager(context, preferencesUtils);
     }
 
     @Singleton

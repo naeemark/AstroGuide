@@ -31,7 +31,7 @@ import javax.inject.Singleton;
 public class PreferencesUtils {
 
     public enum PrefKeys {
-        API_TOKEN
+        IS_SPLASH_DONE
     }
 
     private final SharedPreferences mPref;
@@ -49,6 +49,10 @@ public class PreferencesUtils {
         mPref.edit().putString(key, data).apply();
     }
 
+    public void putBoolean(String key, boolean flag) {
+        mPref.edit().putBoolean(key, flag).apply();
+    }
+
     public String getData(String key) {
         return mPref.getString(key, null);
     }
@@ -57,12 +61,7 @@ public class PreferencesUtils {
         return mPref.getString(key, defaultValue);
     }
 
-    public boolean isLoggedIn() {
-        String apiToken = this.getData(PrefKeys.API_TOKEN.name());
-
-        if (apiToken != null && !apiToken.isEmpty()) {
-            return true;
-        }
-        return false;
+    public boolean getBoolean(String key) {
+        return mPref.getBoolean(key, false);
     }
 }

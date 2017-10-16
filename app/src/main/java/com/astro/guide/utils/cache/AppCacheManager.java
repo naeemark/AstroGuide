@@ -1,7 +1,8 @@
 package com.astro.guide.utils.cache;
 
-import android.util.Log;
+import android.content.Context;
 
+import com.android.filecache.CacheManager;
 import com.astro.guide.BuildConfig;
 import com.astro.guide.model.AppUser;
 import com.astro.guide.utils.PreferencesUtils;
@@ -11,7 +12,7 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
-public class AppCacheManager {
+public class AppCacheManager extends CacheManager {
 
     private static final String TAG = AppCacheManager.class.getSimpleName();
     private static final long CACHE_DEFALUT_TIME_MILLIS = 60 * 1000 * BuildConfig.CACHE_MINUTES;
@@ -20,25 +21,14 @@ public class AppCacheManager {
     protected PreferencesUtils mPreferencesUtils;
 
     @Inject
-    public CacheManager mCacheManager;
-
-    @Inject
-    public AppCacheManager(PreferencesUtils preferencesUtils) {
-
+    public AppCacheManager(Context context, PreferencesUtils preferencesUtils) {
+        super(context);
         mPreferencesUtils = preferencesUtils;
     }
 
     public void saveForTimed(String data, String fileName) {
         mPreferencesUtils.putData(fileName, String.valueOf(Calendar.getInstance().getTimeInMillis()));
         save(data, fileName);
-    }
-
-    public void save(String data, String fileName) {
-        try {
-            mCacheManager.write(data, fileName);
-        } catch (CacheTransactionException e) {
-            e.printStackTrace();
-        }
     }
 
     public String fetchTimed(String fileName) {
@@ -50,29 +40,6 @@ public class AppCacheManager {
         }
 
         return fetch(fileName);
-    }
-
-    public String fetch(String fileName) {
-        String data = null;
-        try {
-            data = mCacheManager.readString(fileName);
-            Log.i(TAG, "fetch=>" + data);
-        } catch (CacheTransactionException e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
-
-    public boolean clear(String fileName) {
-        return mCacheManager.deleteFile(fileName);
-    }
-
-    public boolean clearCache() {
-        return mCacheManager.deleteCacheDirContent();
-    }
-
-    public boolean hasCache() {
-        return mCacheManager.hasCacheContent();
     }
 
     public AppUser getAppUser() {

@@ -8,4 +8,7 @@ public interface SplashInteractor extends BaseInteractor {
 
     String getNoNetworkErrorText();
 
+    boolean isSplashDone();
+
+    void setSpalshDone();
 }

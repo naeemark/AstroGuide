@@ -31,4 +31,14 @@ public final class SplashInteractorImpl extends BaseInteractorImpl implements Sp
         return mContext.getString(R.string.error_no_network);
     }
 
+    @Override
+    public boolean isSplashDone() {
+        return mPreferencesUtils.getBoolean(PreferencesUtils.PrefKeys.IS_SPLASH_DONE.name());
+    }
+
+    @Override
+    public void setSpalshDone() {
+        mPreferencesUtils.putBoolean(PreferencesUtils.PrefKeys.IS_SPLASH_DONE.name(), true);
+    }
+
 }
